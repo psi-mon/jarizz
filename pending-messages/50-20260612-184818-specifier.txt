@@ -1,0 +1,15 @@
+message type: handoff
+message id: handoff-20260612-184818-specifier-coder-000002-8bc5c3
+sender role: specifier
+target role: coder
+message sequence: 000002
+
+Re-read your role and constitution.
+
+Specifier handoff name: shell-001
+Branch: main
+Commit: df9036e
+
+The menubar SwiftUI app target has not been built. JarizzCore, tests, and acceptance pipeline exist, but there is no Xcode app target — no AppDelegate, no NSStatusItem, no popover, no hotkey registration, no LSUIElement Info.plist. The app cannot be launched. Build the macOS app target for shell-001 before slice 2 begins.
+
+Apply your own role rules to this state.

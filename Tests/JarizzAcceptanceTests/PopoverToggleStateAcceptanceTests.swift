@@ -4,11 +4,12 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/toggle_state.json
 final class PopoverToggleStateAcceptanceTests: XCTestCase {
+    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/toggle_state.json"
 
     // Scenario: Toggle state transitions between visible and hidden
     func test_ToggleStateTransitionsBetweenVisibleAndHidden_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = ["initial": "hidden", "result": "visible", ]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 0, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover state is \"<initial>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the popover is toggled")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover state is \"<result>\"")
@@ -16,7 +17,7 @@ final class PopoverToggleStateAcceptanceTests: XCTestCase {
 
     func test_ToggleStateTransitionsBetweenVisibleAndHidden_example2() {
         var world = AcceptanceWorld()
-        let example: [String: String] = ["initial": "visible", "result": "hidden", ]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 0, exampleIndex: 1)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover state is \"<initial>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the popover is toggled")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover state is \"<result>\"")
