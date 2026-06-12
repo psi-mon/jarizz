@@ -1,34 +1,16 @@
 import XCTest
-import JarizzCore
+import Foundation
+@testable import JarizzCore
 
-public enum AcceptanceRuntime {
-    public static func run(world: inout AcceptanceWorld, example: [String: String], keyword: String, text: String) {
-        let resolved = resolve(text, with: example)
-        guard let handler = findHandler(keyword: keyword, text: resolved) else {
-            XCTFail("No step handler for: [\(keyword)] \(resolved)")
-            return
-        }
-        handler(&world, resolved)
-    }
+// Acceptance test entry points are generated from Gherkin IR.
+// Step handlers connecting Gherkin steps to JarizzCore go in StepHandlers.swift.
+// Generated test classes are written to this target by the acceptance entrypoint generator.
 
-    private static func resolve(_ text: String, with example: [String: String]) -> String {
-        var result = text
-        for (key, value) in example {
-            result = result.replacingOccurrences(of: "<\(key)>", with: value)
+extension XCTestCase {
+    static var featureJSON: URL {
+        guard let path = ProcessInfo.processInfo.environment["JARIZZ_FEATURE_JSON"] else {
+            fatalError("JARIZZ_FEATURE_JSON environment variable not set")
         }
-        return result
-    }
-
-    static func findHandler(keyword: String, text: String) -> ((inout AcceptanceWorld, String) -> Void)? {
-        // Prefer keyword-specific match, fall back to wildcard ("*")
-        for kw in [keyword, "*"] {
-            for (handlerKeyword, pattern, handler) in stepHandlerTable {
-                guard handlerKeyword == kw else { continue }
-                if text.range(of: "^(?:\(pattern))$", options: .regularExpression) != nil {
-                    return handler
-                }
-            }
-        }
-        return nil
+        return URL(fileURLWithPath: path)
     }
 }
