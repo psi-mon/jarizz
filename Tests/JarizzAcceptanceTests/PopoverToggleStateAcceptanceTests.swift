@@ -2,9 +2,9 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/toggle_state.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/toggle_state.json
 final class PopoverToggleStateAcceptanceTests: XCTestCase {
-    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/toggle_state.json"
+    private static let compiledIRPath = "build/acceptance/ir/toggle_state.json"
 
     // Scenario: Toggle state transitions between visible and hidden
     func test_ToggleStateTransitionsBetweenVisibleAndHidden_example1() {
