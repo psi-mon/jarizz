@@ -29,6 +29,15 @@ final class HotkeyDescriptionTests: XCTestCase {
         XCTAssertThrowsError(try HotkeyDescription(string: "Control+"))
     }
 
+    func test_parse_unknownModifierThrows() {
+        XCTAssertThrowsError(try HotkeyDescription(string: "Super+A")) { error in
+            guard case HotkeyParseError.unknownModifier(let name) = error else {
+                return XCTFail("expected unknownModifier, got \(error)")
+            }
+            XCTAssertEqual(name, "Super")
+        }
+    }
+
     func test_modifiersDescription_matchesFeatureFormat() throws {
         let hk = try HotkeyDescription(string: "LeftShift+RightCommand+]")
         XCTAssertEqual(hk.modifiersDescription, "leftShift, rightCommand")

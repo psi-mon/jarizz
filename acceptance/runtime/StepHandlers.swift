@@ -46,8 +46,11 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", #"the hotkey string "(.+)" is parsed"#, { world, text in
         let inner = extractQuoted(text)
-        world.lastParsedHotkey = try? HotkeyDescription(string: inner)
-        if world.lastParsedHotkey == nil { XCTFail("Failed to parse hotkey: \(inner)") }
+        do {
+            world.lastParsedHotkey = try HotkeyDescription(string: inner)
+        } catch {
+            XCTFail("Failed to parse hotkey \(inner): \(error)")
+        }
     }),
 
     // Assertion steps (Then/And)
@@ -67,12 +70,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         XCTAssertEqual(world.controller.placeholderText, extractQuoted(text))
     }),
     ("Then", #"the popover state is "(.+)""#, { world, text in
-        let inner = extractQuoted(text)
-        if inner == "visible" {
-            XCTAssertTrue(world.controller.popoverState.isVisible)
-        } else {
-            XCTAssertFalse(world.controller.popoverState.isVisible)
-        }
+        XCTAssertEqual(world.controller.popoverState.rawValue, extractQuoted(text))
     }),
     ("Then", #"the key is "(.+)""#, { world, text in
         XCTAssertEqual(world.lastParsedHotkey?.key, extractQuoted(text))

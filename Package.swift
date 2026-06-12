@@ -24,5 +24,10 @@ let package = Package(
             exclude: ["generator", "build"],
             sources: ["runtime", "generated"]
         ),
+        .testTarget(
+            name: "JarizzCorePropertyTests",
+            dependencies: ["JarizzCore"],
+            path: "Tests/JarizzCorePropertyTests"
+        ),
     ]
 )
