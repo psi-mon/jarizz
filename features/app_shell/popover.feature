@@ -3,49 +3,49 @@
 # {"version":1,"tested_at":"2026-06-12T17:18:15Z","feature_name":"Popover toggle and dismiss","feature_path":"features/app_shell/popover.feature","background_hash":"151a63a15af270e9d7b0dafe5376b29f80e482c8414fb0236be330f9be34738f","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
-Feature: Popover toggle and dismiss
+Feature: Panel toggle and dismiss
 
   Background:
     Given the app is running
 
   # app-shell-003
-  Scenario: Global hotkey shows the popover
-    Given the popover is hidden
+  Scenario: Global hotkey shows the panel
+    Given the panel is hidden
     When the user presses the global hotkey "LeftShift+RightCommand+]"
-    Then the popover is visible
+    Then the panel is visible
 
   # app-shell-004
-  Scenario: Global hotkey hides the popover
-    Given the popover is visible
+  Scenario: Global hotkey hides the panel
+    Given the panel is visible
     When the user presses the global hotkey "LeftShift+RightCommand+]"
-    Then the popover is hidden
+    Then the panel is hidden
 
   # app-shell-005
-  Scenario: Menubar icon click shows the popover
-    Given the popover is hidden
+  Scenario: Menubar icon click shows the panel
+    Given the panel is hidden
     When the user clicks the menubar icon
-    Then the popover is visible
+    Then the panel is visible
 
   # app-shell-006
-  Scenario: Menubar icon click hides the popover
-    Given the popover is visible
+  Scenario: Menubar icon click hides the panel
+    Given the panel is visible
     When the user clicks the menubar icon
-    Then the popover is hidden
+    Then the panel is hidden
 
   # app-shell-007
-  Scenario: Popover displays placeholder content
-    Given the popover is hidden
+  Scenario: Panel displays placeholder content
+    Given the panel is hidden
     When the user presses the global hotkey "LeftShift+RightCommand+]"
-    Then the popover displays the text "jarizz"
+    Then the panel displays the text "jarizz"
 
   # app-shell-008
-  Scenario: Popover dismisses on Escape key
-    Given the popover is visible
+  Scenario: Panel dismisses on Escape key
+    Given the panel is visible
     When the user presses "Escape"
-    Then the popover is hidden
+    Then the panel is hidden
 
   # app-shell-009
-  Scenario: Popover dismisses on outside click
-    Given the popover is visible
-    When the user clicks outside the popover
-    Then the popover is hidden
+  Scenario: Panel dismisses on outside click
+    Given the panel is visible
+    When the user clicks outside the panel
+    Then the panel is hidden
