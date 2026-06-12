@@ -133,6 +133,14 @@ func main() {
 	}
 
 	absIRPath, _ := filepath.Abs(irPath)
+	// Prefer a relative compiledIRPath so generated files are portable across machines.
+	// Fall back to absolute if Rel fails (e.g. different drives on Windows).
+	relIRPath := irPath
+	if cwd, err := os.Getwd(); err == nil {
+		if rel, err := filepath.Rel(cwd, absIRPath); err == nil {
+			relIRPath = rel
+		}
+	}
 	className := toIdentifier(feature.Name) + "AcceptanceTests"
 	outFile := filepath.Join(outDir, className+".swift")
 
@@ -176,7 +184,7 @@ func main() {
 	if err := tmpl.Execute(f, templateData{
 		ClassName:     className,
 		IRPath:        absIRPath,
-		IRPathLiteral: swiftStringLiteral(absIRPath),
+		IRPathLiteral: swiftStringLiteral(relIRPath),
 		Scenarios:     tScenarios,
 	}); err != nil {
 		fmt.Fprintf(os.Stderr, "error generating: %v\n", err)
