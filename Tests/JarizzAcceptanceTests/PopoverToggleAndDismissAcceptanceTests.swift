@@ -2,9 +2,9 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/popover.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/popover.json
 final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
-    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/popover.json"
+    private static let compiledIRPath = "build/acceptance/ir/popover.json"
 
     // Scenario: Global hotkey shows the popover
     func test_GlobalHotkeyShowsThePopover_example1() {

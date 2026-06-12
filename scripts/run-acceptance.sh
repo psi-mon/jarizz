@@ -17,6 +17,9 @@ done
 
 echo "=== Generating acceptance entrypoints ==="
 GENERATED_DIR="$ROOT/Tests/JarizzAcceptanceTests"
+# cd to ROOT so compiledIRPath in generated tests is relative to the package root,
+# matching the working directory used by swift test.
+cd "$ROOT"
 for ir in "$ROOT/build/acceptance/ir/"*.json; do
   [[ -f "$ir" ]] || continue
   "$ROOT/acceptance-entrypoint-generator" "$ir" "$GENERATED_DIR"
