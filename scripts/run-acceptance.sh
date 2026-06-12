@@ -6,24 +6,23 @@ ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 GOPATH_BIN="$(go env GOPATH)/bin"
 export PATH="$PATH:$GOPATH_BIN"
 
-mkdir -p "$ROOT/build/acceptance/ir" "$ROOT/acceptance/generated"
+mkdir -p "$ROOT/build/acceptance/ir" "$ROOT/Tests/JarizzAcceptanceTests"
 
 echo "=== Parsing feature files ==="
 for f in $(find "$ROOT/features" -name "*.feature" 2>/dev/null); do
-  [[ -f "$f" ]] || continue
   base=$(basename "$f" .feature)
   gherkin-parser "$f" "$ROOT/build/acceptance/ir/${base}.json"
   echo "  parsed: $f"
 done
 
 echo "=== Generating acceptance entrypoints ==="
-rm -f "$ROOT/acceptance/generated/"*.swift
+GENERATED_DIR="$ROOT/Tests/JarizzAcceptanceTests"
 for ir in "$ROOT/build/acceptance/ir/"*.json; do
   [[ -f "$ir" ]] || continue
-  "$ROOT/acceptance-entrypoint-generator" "$ir" "$ROOT/acceptance/generated/"
+  "$ROOT/acceptance-entrypoint-generator" "$ir" "$GENERATED_DIR"
 done
 
 echo "=== Running acceptance tests ==="
-swift test --filter AcceptanceTests 2>&1
+swift test --filter JarizzAcceptanceTests 2>&1
 
 echo "=== Done ==="

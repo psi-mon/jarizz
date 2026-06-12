@@ -18,11 +18,9 @@ let package = Package(
             path: "Tests/JarizzCoreTests"
         ),
         .testTarget(
-            name: "AcceptanceTests",
+            name: "JarizzAcceptanceTests",
             dependencies: ["JarizzCore"],
-            path: "acceptance",
-            exclude: ["generator", "build"],
-            sources: ["runtime", "generated"]
+            path: "Tests/JarizzAcceptanceTests"
         ),
     ]
 )
