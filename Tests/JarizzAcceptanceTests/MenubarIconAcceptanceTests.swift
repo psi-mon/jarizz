@@ -4,11 +4,12 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/menubar.json
 final class MenubarIconAcceptanceTests: XCTestCase {
+    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/menubar.json"
 
     // Scenario: App shows menubar icon on launch
     func test_AppShowsMenubarIconOnLaunch_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 0, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is not running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the app launches")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "a menubar status item is visible")
@@ -17,7 +18,7 @@ final class MenubarIconAcceptanceTests: XCTestCase {
     // Scenario: App has no Dock icon
     func test_AppHasNoDockIcon_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is not running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the app launches")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the app does not appear in the Dock")

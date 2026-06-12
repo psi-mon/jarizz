@@ -4,11 +4,12 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/hotkey_parse.json
 final class HotkeyStringParsingAcceptanceTests: XCTestCase {
+    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/hotkey_parse.json"
 
     // Scenario: Hotkey string is parsed into key and modifiers
     func test_HotkeyStringIsParsedIntoKeyAndModifiers_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = ["hotkey": "LeftShift+RightCommand+]", "key": "]", "modifiers": "leftShift, rightCommand", ]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 0, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the hotkey string \"<hotkey>\" is parsed")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the key is \"<key>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the modifiers are \"<modifiers>\"")
