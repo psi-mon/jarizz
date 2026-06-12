@@ -1,0 +1,13 @@
+message type: handoff
+message id: handoff-20260612-180517-refactorer-architect-000003-285e56
+sender role: refactorer
+target role: architect
+message sequence: 000003
+
+Re-read your role and constitution.
+
+Specifier handoff name: shell-001
+Branch: swarmforge-refactorer
+Commit: 22b5729aec
+
+Apply your own role rules to this state.
