@@ -21,7 +21,7 @@
 - Dependencies: prefer Apple frameworks; avoid Electron and other heavy third-party UI stacks.
 - Bundle identifier placeholder: com.jarizz.app.
 - Menubar icon: SF Symbol bubble.left.and.bubble.right until a custom asset exists.
-- Default global hotkey: Control+Option+Space (configurable; persistence is a later slice).
+- Default global hotkey: LeftShift+RightCommand+] (configurable; persistence is a later slice).
 
 ## Architecture Principles
 - Maximize testable JarizzCore modules; keep AppKit, SwiftUI, and WebKit at thin adapter edges.

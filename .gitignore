@@ -6,6 +6,7 @@
 swarmforge/scripts/
 .build/
 build/
+acceptance-entrypoint-generator
 tmp/
 *.o
 *.d
