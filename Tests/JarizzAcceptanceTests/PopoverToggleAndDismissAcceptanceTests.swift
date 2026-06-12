@@ -4,11 +4,12 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/popover.json
 final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
+    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/popover.json"
 
     // Scenario: Global hotkey shows the popover
     func test_GlobalHotkeyShowsThePopover_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 0, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
@@ -18,7 +19,7 @@ final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Global hotkey hides the popover
     func test_GlobalHotkeyHidesThePopover_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
@@ -28,7 +29,7 @@ final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Menubar icon click shows the popover
     func test_MenubarIconClickShowsThePopover_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 2, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks the menubar icon")
@@ -38,7 +39,7 @@ final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Menubar icon click hides the popover
     func test_MenubarIconClickHidesThePopover_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks the menubar icon")
@@ -48,7 +49,7 @@ final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Popover displays placeholder content
     func test_PopoverDisplaysPlaceholderContent_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
@@ -58,7 +59,7 @@ final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Popover dismisses on Escape key
     func test_PopoverDismissesOnEscapeKey_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses \"Escape\"")
@@ -68,7 +69,7 @@ final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Popover dismisses on outside click
     func test_PopoverDismissesOnOutsideClick_example1() {
         var world = AcceptanceWorld()
-        let example: [String: String] = [:]
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 6, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks outside the popover")
