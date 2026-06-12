@@ -48,12 +48,14 @@ enum HotkeyMonitor {
         return map[key] ?? 0
     }
 
+    // Use intersection (not contains) so that a single sided modifier (e.g. .leftShift)
+    // still matches the side-agnostic Carbon flag (.shift = [.leftShift, .rightShift]).
     private static func carbonModifiers(for modifiers: Hotkey.Modifiers) -> UInt32 {
         var result: UInt32 = 0
-        if modifiers.contains(.control) { result |= UInt32(controlKey) }
-        if modifiers.contains(.option)  { result |= UInt32(optionKey) }
-        if modifiers.contains(.command) { result |= UInt32(cmdKey) }
-        if modifiers.contains(.shift)   { result |= UInt32(shiftKey) }
+        if !modifiers.intersection(.control).isEmpty { result |= UInt32(controlKey) }
+        if !modifiers.intersection(.option).isEmpty  { result |= UInt32(optionKey) }
+        if !modifiers.intersection(.command).isEmpty { result |= UInt32(cmdKey) }
+        if !modifiers.intersection(.shift).isEmpty   { result |= UInt32(shiftKey) }
         return result
     }
 }

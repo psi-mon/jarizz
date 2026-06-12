@@ -4,7 +4,7 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/menubar.json
 final class MenubarIconAcceptanceTests: XCTestCase {
-    private static let compiledIRPath = "/Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/menubar.json"
+    private static let compiledIRPath = "build/acceptance/ir/menubar.json"
 
     // Scenario: App shows menubar icon on launch
     func test_AppShowsMenubarIconOnLaunch_example1() {
