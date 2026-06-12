@@ -4,3 +4,10 @@
 .swarmforge/
 .worktrees/
 swarmforge/scripts/
+.build/
+build/
+tmp/
+*.o
+*.d
+xcuserdata/
+*.xcworkspace/xcuserdata/
