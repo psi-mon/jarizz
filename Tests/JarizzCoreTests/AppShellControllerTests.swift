@@ -37,4 +37,8 @@ final class AppShellControllerTests: XCTestCase {
     func test_dockIconHidden() {
         XCTAssertTrue(AppShellController().dockIconHidden)
     }
+
+    func test_hotkeyIsDefault() {
+        XCTAssertEqual(AppShellController().hotkey, Hotkey.defaultHotkey)
+    }
 }

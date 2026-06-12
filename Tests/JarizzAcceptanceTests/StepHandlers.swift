@@ -46,7 +46,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", #"the hotkey string "(.+)" is parsed"#, { world, text in
         let inner = extractQuoted(text)
-        world.lastParsedHotkey = try? HotkeyDescription(string: inner)
+        world.lastParsedHotkey = try? Hotkey.parse(inner)
         if world.lastParsedHotkey == nil { XCTFail("Failed to parse hotkey: \(inner)") }
     }),
 
@@ -78,7 +78,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         XCTAssertEqual(world.lastParsedHotkey?.key, extractQuoted(text))
     }),
     ("And", #"the modifiers are "(.+)""#, { world, text in
-        XCTAssertEqual(world.lastParsedHotkey?.modifiersDescription, extractQuoted(text))
+        XCTAssertEqual(world.lastParsedHotkey?.modifiers.description, extractQuoted(text))
     }),
 ]
 

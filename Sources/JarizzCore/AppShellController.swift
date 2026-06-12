@@ -1,6 +1,7 @@
 public struct AppShellController {
     public private(set) var isRunning: Bool = false
     public private(set) var popoverState: PopoverState = PopoverState()
+    public let hotkey: Hotkey = .defaultHotkey
     public let placeholderText: String = "jarizz"
     public let dockIconHidden: Bool = true
 

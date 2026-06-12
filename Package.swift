@@ -22,5 +22,10 @@ let package = Package(
             dependencies: ["JarizzCore"],
             path: "Tests/JarizzAcceptanceTests"
         ),
+        .testTarget(
+            name: "JarizzCorePropertyTests",
+            dependencies: ["JarizzCore"],
+            path: "Tests/JarizzCorePropertyTests"
+        ),
     ]
 )
