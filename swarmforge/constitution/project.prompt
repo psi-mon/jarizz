@@ -1,0 +1,71 @@
+# Project Rules
+
+## Product Summary
+- jarizz is a small, native macOS menubar app that provides one unified UI for talking to many AI backends.
+- The app runs as a menubar icon only (no Dock icon).
+- A user-configurable global hotkey shows and hides the main UI (popover or compact floating panel).
+- Long-term backends:
+  - Local CLI agents: claude, copilot, codex, gemini CLI (whatever is installed on the machine).
+  - Web AI services: embedded in-app browser (for example https://gemini.google.com/app) with full login and session support.
+
+## Project Shape
+- This project is configured for SwarmForge with four Claude-backed agents: specifier, coder, refactorer, and architect.
+- Project language: Swift.
+- UI framework: SwiftUI.
+- Platform: macOS only.
+- Minimum macOS version: 14.0.
+
+## Technology Stack
+- Web embedding (future slices): WKWebView via WebKit, not an external browser tab.
+- Build layout: Swift Package Manager for testable libraries plus an Xcode app target for the .app bundle.
+- Dependencies: prefer Apple frameworks; avoid Electron and other heavy third-party UI stacks.
+- Bundle identifier placeholder: com.jarizz.app.
+- Menubar icon: SF Symbol bubble.left.and.bubble.right until a custom asset exists.
+- Default global hotkey: Control+Option+Space (configurable; persistence is a later slice).
+
+## Architecture Principles
+- Maximize testable JarizzCore modules; keep AppKit, SwiftUI, and WebKit at thin adapter edges.
+- Future provider model (document now, implement in later slices):
+  - AIProvider protocol with two kinds:
+    - LocalCLIProvider: spawns and streams a local binary found on PATH.
+    - WebServiceProvider: loads a configured URL in WKWebView, preserving cookies and authentication state.
+- Configuration persistence (future): ~/Library/Application Support/jarizz/ as JSON or plist.
+- Global hotkey monitoring will eventually need Accessibility approval; degrade gracefully so menubar click still toggles the popover when hotkey permission is denied.
+
+## MVP Scope — Slice 1: App Shell
+
+In scope:
+- App launches and shows a menubar status item (jarizz icon or placeholder SF Symbol).
+- Global hotkey toggles visibility of a popover or panel anchored to the menubar item.
+- Popover contains a placeholder empty state (for example a jarizz title with no provider UI yet).
+- Hotkey is configurable in code via constants for now; persistence is a later slice.
+- Clicking the menubar icon also toggles the popover.
+- Popover dismisses on outside click or Escape.
+- App is agent-accessible: LSUIElement menubar-only, no Dock icon.
+- Unit tests cover pure logic in JarizzCore (hotkey parsing, toggle state), not live GUI rendering.
+
+Out of scope for slice 1:
+- Provider configuration UI.
+- Spawning local CLI agents.
+- WKWebView, web AI services, and authentication flows.
+- Chat history, streaming responses, and multi-tab providers.
+- Settings window beyond a hardcoded default hotkey constant.
+
+## Roadmap Phases
+1. Shell — menubar, hotkey, empty popover (current slice).
+2. Settings — persist hotkey and basic app preferences.
+3. Provider registry — add, edit, and remove configured providers (local and web types).
+4. Local CLI provider — wire first local agent (claude CLI as reference implementation).
+5. Web provider — WKWebView panel for Gemini or similar with cookie and session persistence.
+6. Unified chat UX — single input surface routing to the active provider.
+7. Additional providers — copilot, codex, gemini-cli, and more web URLs.
+
+## Local Configuration
+- Preserve project-local SwarmForge configuration under swarmforge/.
+- Keep swarm state local under .swarmforge/, worktrees under .worktrees/, and shared scripts under swarmforge/scripts/.
+
+## Handoffs
+- Prefer terse, explicit handoffs that report state and request role-appropriate review. Do not include verifications or sender process narrative.
+
+## Ownership
+- Do not change another role's prompt or workflow ownership without explicit user direction.
