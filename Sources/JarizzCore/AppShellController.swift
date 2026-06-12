@@ -1,9 +1,12 @@
+import CoreGraphics
+
 public struct AppShellController {
     public private(set) var isRunning: Bool = false
     public private(set) var popoverState: PopoverState = PopoverState()
     public let hotkey: Hotkey = .defaultHotkey
     public let placeholderText: String = "jarizz"
     public let dockIconHidden: Bool = true
+    public let panelAnimatesOnShow: Bool = true
 
     public init() {}
 
@@ -12,4 +15,8 @@ public struct AppShellController {
     public mutating func togglePopover() { popoverState.toggle() }
 
     public mutating func dismissPopover() { popoverState.hide() }
+
+    public func panelFrame(for screenFrame: CGRect) -> CGRect {
+        PanelGeometry.frame(for: screenFrame)
+    }
 }

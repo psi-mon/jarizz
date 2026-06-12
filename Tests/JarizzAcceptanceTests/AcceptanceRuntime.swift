@@ -20,8 +20,11 @@ public enum AcceptanceRuntime {
     }
 
     static func findHandler(keyword: String, text: String) -> ((inout AcceptanceWorld, String) -> Void)? {
-        // Prefer keyword-specific match, fall back to wildcard ("*")
-        for kw in [keyword, "*"] {
+        // "And" continues the previous step's role; try all role keywords before wildcard.
+        let candidates = keyword == "And"
+            ? [keyword, "Given", "When", "Then", "*"]
+            : [keyword, "*"]
+        for kw in candidates {
             for (handlerKeyword, pattern, handler) in stepHandlerTable {
                 guard handlerKeyword == kw else { continue }
                 if text.range(of: "^(?:\(pattern))$", options: .regularExpression) != nil {

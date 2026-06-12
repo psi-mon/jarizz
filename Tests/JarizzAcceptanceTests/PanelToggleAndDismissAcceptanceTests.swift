@@ -2,77 +2,77 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/popover.json
-final class PopoverToggleAndDismissAcceptanceTests: XCTestCase {
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/popover.json
+final class PanelToggleAndDismissAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "build/acceptance/ir/popover.json"
 
-    // Scenario: Global hotkey shows the popover
-    func test_GlobalHotkeyShowsThePopover_example1() {
+    // Scenario: Global hotkey shows the panel
+    func test_GlobalHotkeyShowsThePanel_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 0, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is visible")
     }
 
-    // Scenario: Global hotkey hides the popover
-    func test_GlobalHotkeyHidesThePopover_example1() {
+    // Scenario: Global hotkey hides the panel
+    func test_GlobalHotkeyHidesThePanel_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is hidden")
     }
 
-    // Scenario: Menubar icon click shows the popover
-    func test_MenubarIconClickShowsThePopover_example1() {
+    // Scenario: Menubar icon click shows the panel
+    func test_MenubarIconClickShowsThePanel_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 2, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks the menubar icon")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is visible")
     }
 
-    // Scenario: Menubar icon click hides the popover
-    func test_MenubarIconClickHidesThePopover_example1() {
+    // Scenario: Menubar icon click hides the panel
+    func test_MenubarIconClickHidesThePanel_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks the menubar icon")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is hidden")
     }
 
-    // Scenario: Popover displays placeholder content
-    func test_PopoverDisplaysPlaceholderContent_example1() {
+    // Scenario: Panel displays placeholder content
+    func test_PanelDisplaysPlaceholderContent_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover displays the text \"jarizz\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel displays the text \"jarizz\"")
     }
 
-    // Scenario: Popover dismisses on Escape key
-    func test_PopoverDismissesOnEscapeKey_example1() {
+    // Scenario: Panel dismisses on Escape key
+    func test_PanelDismissesOnEscapeKey_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses \"Escape\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is hidden")
     }
 
-    // Scenario: Popover dismisses on outside click
-    func test_PopoverDismissesOnOutsideClick_example1() {
+    // Scenario: Panel dismisses on outside click
+    func test_PanelDismissesOnOutsideClick_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 6, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the popover is visible")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks outside the popover")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the popover is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks outside the panel")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is hidden")
     }
 }
