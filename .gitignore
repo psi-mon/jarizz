@@ -8,4 +8,7 @@ swarmforge/scripts/
 build/
 acceptance-entrypoint-generator
 tmp/
-
+*.o
+*.d
+xcuserdata/
+*.xcworkspace/xcuserdata/

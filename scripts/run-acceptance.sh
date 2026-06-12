@@ -1,29 +1,26 @@
 #!/usr/bin/env bash
+# Run acceptance tests for a given feature file.
+# Usage: scripts/run-acceptance.sh <feature-file>
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-GOPATH_BIN="$(go env GOPATH)/bin"
-export PATH="$PATH:$GOPATH_BIN"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+APS_TOOLS_DIR="$REPO_ROOT/tmp"
+GHERKIN_PARSER="$APS_TOOLS_DIR/gherkin-parser"
+FEATURE_FILE="${1:?Usage: $0 <feature-file>}"
+FEATURE_NAME="$(basename "$FEATURE_FILE" .feature)"
+BUILD_DIR="$REPO_ROOT/build/acceptance"
+IR_FILE="$BUILD_DIR/ir/$FEATURE_NAME.json"
+GENERATED_DIR="$BUILD_DIR/generated"
 
-mkdir -p "$ROOT/build/acceptance/ir" "$ROOT/acceptance/generated"
+mkdir -p "$BUILD_DIR/ir" "$GENERATED_DIR"
 
-echo "=== Parsing feature files ==="
-for f in $(find "$ROOT/features" -name "*.feature" 2>/dev/null); do
-  [[ -f "$f" ]] || continue
-  base=$(basename "$f" .feature)
-  gherkin-parser "$f" "$ROOT/build/acceptance/ir/${base}.json"
-  echo "  parsed: $f"
-done
+printf 'Parsing %s -> %s\n' "$FEATURE_FILE" "$IR_FILE"
+"$GHERKIN_PARSER" "$FEATURE_FILE" "$IR_FILE"
 
-echo "=== Generating acceptance entrypoints ==="
-rm -f "$ROOT/acceptance/generated/"*.swift
-for ir in "$ROOT/build/acceptance/ir/"*.json; do
-  [[ -f "$ir" ]] || continue
-  "$ROOT/acceptance-entrypoint-generator" "$ir" "$ROOT/acceptance/generated/"
-done
-
-echo "=== Running acceptance tests ==="
-swift test --filter AcceptanceTests 2>&1
-
-echo "=== Done ==="
+printf 'Running acceptance tests\n'
+cd "$REPO_ROOT"
+JARIZZ_FEATURE_JSON="$IR_FILE" \
+JARIZZ_GENERATED_DIR="$GENERATED_DIR" \
+swift test \
+  --scratch-path "$REPO_ROOT/.build" \
+  --filter JarizzAcceptanceTests

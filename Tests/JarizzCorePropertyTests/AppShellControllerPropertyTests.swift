@@ -2,12 +2,11 @@ import XCTest
 @testable import JarizzCore
 
 final class AppShellControllerPropertyTests: XCTestCase {
-    private let allStates: [PopoverToggleState] = [.hidden, .visible]
 
     func test_prop_dismissAlwaysHides() {
-        forAll(allStates, "dismissPopover always results in hidden") { initialState in
+        forAll([false, true], "dismissPopover always results in hidden") { startVisible in
             var ctrl = AppShellController()
-            if initialState == .visible { ctrl.togglePopover() }
+            if startVisible { ctrl.togglePopover() }
             ctrl.dismissPopover()
             return !ctrl.popoverState.isVisible
         }
@@ -21,10 +20,10 @@ final class AppShellControllerPropertyTests: XCTestCase {
     }
 
     func test_prop_togglePreservesRunningState() {
-        forAll(allStates, "togglePopover does not affect isRunning") { initialPopover in
+        forAll([false, true], "togglePopover does not affect isRunning") { startVisible in
             var ctrl = AppShellController()
             ctrl.launch()
-            if initialPopover == .visible { ctrl.togglePopover() }
+            if startVisible { ctrl.togglePopover() }
             ctrl.togglePopover()
             return ctrl.isRunning
         }
