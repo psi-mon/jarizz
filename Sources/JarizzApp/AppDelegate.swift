@@ -4,13 +4,13 @@ import JarizzCore
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
-    private var popover: NSPopover?
+    private var panel: NSPanel?
     private var eventMonitor: Any?
     private var shell = AppShellController()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
-        setupPopover()
+        setupPanel()
         registerHotkey()
     }
 
@@ -28,41 +28,78 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func setupPopover() {
-        let p = NSPopover()
-        p.contentSize = NSSize(width: 360, height: 240)
-        p.behavior = .transient
-        p.contentViewController = NSHostingController(rootView: PlaceholderView())
-        popover = p
+    private func setupPanel() {
+        let p = NSPanel(
+            contentRect: .zero,
+            styleMask: [.nonactivatingPanel, .titled, .closable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        p.isFloatingPanel = true
+        p.titleVisibility = .hidden
+        p.titlebarAppearsTransparent = true
+        p.isMovableByWindowBackground = true
+        p.level = .floating
+        p.animationBehavior = .utilityWindow
+        p.hidesOnDeactivate = false
+        p.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        p.contentView = NSHostingView(rootView: PlaceholderView())
+        panel = p
+
+        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            if event.keyCode == 53 { // Escape
+                self?.dismissPanel()
+                return nil
+            }
+            return event
+        }
     }
 
     @objc private func statusItemClicked() {
-        togglePopover()
+        togglePanel()
     }
 
-    private func togglePopover() {
-        guard let button = statusItem?.button, let p = popover else { return }
-        if p.isShown {
-            p.performClose(nil)
-            shell.dismissPopover()
+    private func togglePanel() {
+        guard let p = panel else { return }
+        if p.isVisible {
+            dismissPanel()
         } else {
-            p.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-            shell.togglePopover()
-            p.contentViewController?.view.window?.makeKey()
-            startEventMonitor()
+            showPanel()
         }
+    }
+
+    private func showPanel() {
+        guard let p = panel else { return }
+        let screen = screenForMouse()
+        let frame = shell.panelFrame(for: screen.visibleFrame)
+        p.setFrame(frame, display: false)
+        p.alphaValue = 0
+        p.makeKeyAndOrderFront(nil)
+        NSAnimationContext.runAnimationGroup { ctx in
+            ctx.duration = 0.15
+            p.animator().alphaValue = 1
+        }
+        shell.togglePopover()
+        startEventMonitor()
+    }
+
+    private func dismissPanel() {
+        panel?.orderOut(nil)
+        shell.dismissPopover()
+        stopEventMonitor()
+    }
+
+    private func screenForMouse() -> NSScreen {
+        let mouseLocation = NSEvent.mouseLocation
+        return NSScreen.screens.first {
+            NSMouseInRect(mouseLocation, $0.frame, false)
+        } ?? NSScreen.main ?? NSScreen.screens[0]
     }
 
     private func startEventMonitor() {
         eventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
-            self?.dismissPopover()
+            self?.dismissPanel()
         }
-    }
-
-    private func dismissPopover() {
-        popover?.performClose(nil)
-        shell.dismissPopover()
-        stopEventMonitor()
     }
 
     private func stopEventMonitor() {
@@ -74,7 +111,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func registerHotkey() {
         HotkeyMonitor.register(hotkey: shell.hotkey) { [weak self] in
-            self?.togglePopover()
+            self?.togglePanel()
         }
     }
 
