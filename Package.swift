@@ -6,11 +6,23 @@ let package = Package(
     platforms: [.macOS(.v14)],
     products: [
         .library(name: "JarizzCore", targets: ["JarizzCore"]),
+        .executable(name: "jarizz", targets: ["JarizzApp"]),
     ],
     targets: [
         .target(
             name: "JarizzCore",
             path: "Sources/JarizzCore"
+        ),
+        .executableTarget(
+            name: "JarizzApp",
+            dependencies: ["JarizzCore"],
+            path: "Sources/JarizzApp",
+            exclude: ["Info.plist"],
+            linkerSettings: [
+                .linkedFramework("AppKit"),
+                .linkedFramework("Carbon"),
+                .linkedFramework("SwiftUI"),
+            ]
         ),
         .testTarget(
             name: "JarizzCoreTests",
