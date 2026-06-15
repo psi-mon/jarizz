@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/build/acceptance/ir/toggle_state.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/toggle_state.json
 final class PanelToggleStateAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "build/acceptance/ir/toggle_state.json"
 
