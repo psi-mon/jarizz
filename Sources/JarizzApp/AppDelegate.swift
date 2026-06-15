@@ -71,7 +71,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func showPanel() {
         guard let p = panel else { return }
         let screen = screenForMouse()
-        let frame = shell.panelFrame(for: screen.visibleFrame)
+        let frame = shell.panelFrame(for: screen.frame)
         p.setFrame(frame, display: false)
         p.alphaValue = 0
         p.makeKeyAndOrderFront(nil)

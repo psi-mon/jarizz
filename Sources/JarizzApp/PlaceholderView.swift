@@ -9,6 +9,6 @@ struct PlaceholderView: View {
                 .foregroundColor(.secondary)
             Spacer()
         }
-        .frame(width: 360, height: 240)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
