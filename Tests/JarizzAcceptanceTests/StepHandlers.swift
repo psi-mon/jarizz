@@ -24,10 +24,14 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.controller = AppShellController()
         if inner == "visible" { world.controller.togglePopover() }
     }),
-    ("Given", #"the mouse pointer is on screen "(.+)""#, { world, text in
-        world.mouseScreen = extractQuoted(text)
+    ("Given", #"the mouse pointer is on a screen with frame origin "(\d+)" "(\d+)" and size "(\d+)" by "(\d+)""#, { world, text in
+        let parts = extractAllQuoted(text)
+        world.screenOriginX = Double(parts[safe: 0] ?? "0") ?? 0
+        world.screenOriginY = Double(parts[safe: 1] ?? "0") ?? 0
+        world.screenWidth = Double(parts[safe: 2] ?? "0") ?? 0
+        world.screenHeight = Double(parts[safe: 3] ?? "0") ?? 0
     }),
-    ("Given", #"the mouse pointer is on a screen with dimensions "(\d+)" by "(\d+)""#, { world, text in
+    ("Given", #"the mouse pointer is on a screen with frame size "(\d+)" by "(\d+)""#, { world, text in
         let parts = extractAllQuoted(text)
         world.screenWidth = Double(parts[safe: 0] ?? "0") ?? 0
         world.screenHeight = Double(parts[safe: 1] ?? "0") ?? 0
@@ -91,10 +95,15 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Then", "the panel appears with a fade-in animation", { world, _ in
         XCTAssertTrue(world.controller.panelAnimatesOnShow)
     }),
-    ("Then", #"the panel is centered on screen "(.+)""#, { world, text in
-        // Centering is verified by geometry logic in JarizzCore.
-        // Acceptance-level: confirm the panel's screen matches the mouse screen.
-        XCTAssertEqual(world.mouseScreen, extractQuoted(text))
+    ("Then", #"the panel center x is "(\d+)""#, { world, text in
+        let expected = Double(extractQuoted(text)) ?? 0
+        let screen = CGRect(x: world.screenOriginX, y: world.screenOriginY, width: world.screenWidth, height: world.screenHeight)
+        XCTAssertEqual(PanelGeometry.frame(for: screen).midX, expected)
+    }),
+    ("And", #"the panel center y is "(\d+)""#, { world, text in
+        let expected = Double(extractQuoted(text)) ?? 0
+        let screen = CGRect(x: world.screenOriginX, y: world.screenOriginY, width: world.screenWidth, height: world.screenHeight)
+        XCTAssertEqual(PanelGeometry.frame(for: screen).midY, expected)
     }),
     ("Then", #"the panel width is "(\d+)""#, { world, text in
         let expected = Double(extractQuoted(text)) ?? 0
