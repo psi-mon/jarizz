@@ -16,45 +16,47 @@ final class PanelLayoutAndAppearanceAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel appears with a fade-in animation")
     }
 
-    // Scenario: Panel appears centered on the screen containing the mouse pointer
-    func test_PanelAppearsCenteredOnTheScreenContainingTheMousePointer_example1() {
+    // Scenario: Panel center aligns with the center of the screen frame containing the mouse pointer
+    func test_PanelCenterAlignsWithTheCenterOfTheScreenFrameContainingTheMousePointer_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on screen \"<screen>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with frame origin \"<origin_x>\" \"<origin_y>\" and size \"<width>\" by \"<height>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is centered on screen \"<screen>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel center x is \"<center_x>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel center y is \"<center_y>\"")
     }
 
-    func test_PanelAppearsCenteredOnTheScreenContainingTheMousePointer_example2() {
+    func test_PanelCenterAlignsWithTheCenterOfTheScreenFrameContainingTheMousePointer_example2() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 1)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on screen \"<screen>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with frame origin \"<origin_x>\" \"<origin_y>\" and size \"<width>\" by \"<height>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is centered on screen \"<screen>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel center x is \"<center_x>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel center y is \"<center_y>\"")
     }
 
-    // Scenario: Panel size defaults to 50 percent of the current screen dimensions
-    func test_PanelSizeDefaultsTo50PercentOfTheCurrentScreenDimensions_example1() {
+    // Scenario: Panel size defaults to 50 percent of the screen frame dimensions
+    func test_PanelSizeDefaultsTo50PercentOfTheScreenFrameDimensions_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 2, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with dimensions \"<width>\" by \"<height>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with frame size \"<width>\" by \"<height>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel width is \"<panel_width>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel height is \"<panel_height>\"")
     }
 
-    func test_PanelSizeDefaultsTo50PercentOfTheCurrentScreenDimensions_example2() {
+    func test_PanelSizeDefaultsTo50PercentOfTheScreenFrameDimensions_example2() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 2, exampleIndex: 1)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with dimensions \"<width>\" by \"<height>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with frame size \"<width>\" by \"<height>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel width is \"<panel_width>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel height is \"<panel_height>\"")
