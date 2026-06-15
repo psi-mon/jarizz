@@ -111,6 +111,14 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         let expected = Double(extractQuoted(text)) ?? 0
         XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).height, expected)
     }),
+    ("Then", #"the panel content width is "(\d+)""#, { world, text in
+        let expected = Double(extractQuoted(text)) ?? 0
+        XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).width, expected)
+    }),
+    ("And", #"the panel content height is "(\d+)""#, { world, text in
+        let expected = Double(extractQuoted(text)) ?? 0
+        XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).height, expected)
+    }),
 ]
 
 private func screenRect(_ world: AcceptanceWorld) -> CGRect {
