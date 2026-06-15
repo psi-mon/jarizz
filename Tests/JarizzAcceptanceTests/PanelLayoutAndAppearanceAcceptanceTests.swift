@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/refactorer/build/acceptance/ir/panel_layout.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/panel_layout.json
 final class PanelLayoutAndAppearanceAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "build/acceptance/ir/panel_layout.json"
 
