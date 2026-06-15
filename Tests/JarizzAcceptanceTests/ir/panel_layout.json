@@ -120,14 +120,13 @@
           "width": "1920"
         }
       ]
-    }
-  ,
+    },
     {
       "name": "Panel content area fills the panel window",
       "steps": [
         {
           "keyword": "Given",
-          "text": "the mouse pointer is on a screen with frame size \"<width>\" by \"<height>\"",
+          "text": "the mouse pointer is on a screen with frame size \"\u003cwidth\u003e\" by \"\u003cheight\u003e\"",
           "parameters": [
             "width",
             "height"
@@ -139,14 +138,14 @@
         },
         {
           "keyword": "Then",
-          "text": "the panel content width is \"<panel_width>\"",
+          "text": "the panel content width is \"\u003cpanel_width\u003e\"",
           "parameters": [
             "panel_width"
           ]
         },
         {
           "keyword": "And",
-          "text": "the panel content height is \"<panel_height>\"",
+          "text": "the panel content height is \"\u003cpanel_height\u003e\"",
           "parameters": [
             "panel_height"
           ]

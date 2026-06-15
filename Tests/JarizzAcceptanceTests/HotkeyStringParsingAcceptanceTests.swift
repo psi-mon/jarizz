@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/hotkey_parse.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/hotkey_parse.json
 final class HotkeyStringParsingAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/hotkey_parse.json"
 
