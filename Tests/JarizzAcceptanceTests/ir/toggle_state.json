@@ -1,0 +1,38 @@
+{
+  "name": "Panel toggle state",
+  "scenarios": [
+    {
+      "name": "Toggle state transitions between visible and hidden",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel state is \"\u003cinitial\u003e\"",
+          "parameters": [
+            "initial"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the panel is toggled"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel state is \"\u003cresult\u003e\"",
+          "parameters": [
+            "result"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "initial": "hidden",
+          "result": "visible"
+        },
+        {
+          "initial": "visible",
+          "result": "hidden"
+        }
+      ]
+    }
+  ]
+}

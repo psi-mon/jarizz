@@ -1,0 +1,137 @@
+{
+  "name": "Panel toggle and dismiss",
+  "background": [
+    {
+      "keyword": "Given",
+      "text": "the app is running"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Global hotkey shows the panel",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is hidden"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Global hotkey hides the panel",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is hidden"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Menubar icon click shows the panel",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is hidden"
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the menubar icon"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Menubar icon click hides the panel",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the menubar icon"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is hidden"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Panel displays placeholder content",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is hidden"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel displays the text \"jarizz\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Panel dismisses on Escape key",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses \"Escape\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is hidden"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Panel dismisses on outside click",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks outside the panel"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is hidden"
+        }
+      ],
+      "examples": []
+    }
+  ]
+}

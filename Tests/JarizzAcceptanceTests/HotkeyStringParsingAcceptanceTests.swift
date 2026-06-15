@@ -4,7 +4,7 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/hotkey_parse.json
 final class HotkeyStringParsingAcceptanceTests: XCTestCase {
-    private static let compiledIRPath = "build/acceptance/ir/hotkey_parse.json"
+    private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/hotkey_parse.json"
 
     // Scenario: Hotkey string is parsed into key and modifiers
     func test_HotkeyStringIsParsedIntoKeyAndModifiers_example1() {

@@ -4,7 +4,7 @@ import XCTest
 
 // IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/build/acceptance/ir/popover.json
 final class PanelToggleAndDismissAcceptanceTests: XCTestCase {
-    private static let compiledIRPath = "build/acceptance/ir/popover.json"
+    private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/popover.json"
 
     // Scenario: Global hotkey shows the panel
     func test_GlobalHotkeyShowsThePanel_example1() {
