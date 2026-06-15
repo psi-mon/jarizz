@@ -1,0 +1,38 @@
+{
+  "name": "Hotkey string parsing",
+  "scenarios": [
+    {
+      "name": "Hotkey string is parsed into key and modifiers",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the hotkey string \"\u003chotkey\u003e\" is parsed",
+          "parameters": [
+            "hotkey"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the key is \"\u003ckey\u003e\"",
+          "parameters": [
+            "key"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the modifiers are \"\u003cmodifiers\u003e\"",
+          "parameters": [
+            "modifiers"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "hotkey": "LeftShift+RightCommand+]",
+          "key": "]",
+          "modifiers": "leftShift, rightCommand"
+        }
+      ]
+    }
+  ]
+}

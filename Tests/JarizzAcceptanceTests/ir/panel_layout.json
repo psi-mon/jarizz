@@ -1,0 +1,170 @@
+{
+  "name": "Panel layout and appearance",
+  "background": [
+    {
+      "keyword": "Given",
+      "text": "the app is running"
+    },
+    {
+      "keyword": "And",
+      "text": "the panel is hidden"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Panel appears with a fade-in animation",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel appears with a fade-in animation"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Panel center aligns with the center of the screen frame containing the mouse pointer",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the mouse pointer is on a screen with frame origin \"\u003corigin_x\u003e\" \"\u003corigin_y\u003e\" and size \"\u003cwidth\u003e\" by \"\u003cheight\u003e\"",
+          "parameters": [
+            "origin_x",
+            "origin_y",
+            "width",
+            "height"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel center x is \"\u003ccenter_x\u003e\"",
+          "parameters": [
+            "center_x"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the panel center y is \"\u003ccenter_y\u003e\"",
+          "parameters": [
+            "center_y"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "center_x": "1280",
+          "center_y": "720",
+          "height": "1440",
+          "origin_x": "0",
+          "origin_y": "0",
+          "width": "2560"
+        },
+        {
+          "center_x": "3520",
+          "center_y": "540",
+          "height": "1080",
+          "origin_x": "2560",
+          "origin_y": "0",
+          "width": "1920"
+        }
+      ]
+    },
+    {
+      "name": "Panel size defaults to 50 percent of the screen frame dimensions",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the mouse pointer is on a screen with frame size \"\u003cwidth\u003e\" by \"\u003cheight\u003e\"",
+          "parameters": [
+            "width",
+            "height"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel width is \"\u003cpanel_width\u003e\"",
+          "parameters": [
+            "panel_width"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the panel height is \"\u003cpanel_height\u003e\"",
+          "parameters": [
+            "panel_height"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "height": "1440",
+          "panel_height": "720",
+          "panel_width": "1280",
+          "width": "2560"
+        },
+        {
+          "height": "1080",
+          "panel_height": "540",
+          "panel_width": "960",
+          "width": "1920"
+        }
+      ]
+    },
+    {
+      "name": "Panel content area fills the panel window",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the mouse pointer is on a screen with frame size \"\u003cwidth\u003e\" by \"\u003cheight\u003e\"",
+          "parameters": [
+            "width",
+            "height"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel content width is \"\u003cpanel_width\u003e\"",
+          "parameters": [
+            "panel_width"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the panel content height is \"\u003cpanel_height\u003e\"",
+          "parameters": [
+            "panel_height"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "height": "1440",
+          "panel_height": "720",
+          "panel_width": "1280",
+          "width": "2560"
+        },
+        {
+          "height": "1080",
+          "panel_height": "540",
+          "panel_width": "960",
+          "width": "1920"
+        }
+      ]
+    }
+  ]
+}

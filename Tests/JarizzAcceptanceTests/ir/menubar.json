@@ -1,0 +1,41 @@
+{
+  "name": "Menubar icon",
+  "scenarios": [
+    {
+      "name": "App shows menubar icon on launch",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is not running"
+        },
+        {
+          "keyword": "When",
+          "text": "the app launches"
+        },
+        {
+          "keyword": "Then",
+          "text": "a menubar status item is visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "App has no Dock icon",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is not running"
+        },
+        {
+          "keyword": "When",
+          "text": "the app launches"
+        },
+        {
+          "keyword": "Then",
+          "text": "the app does not appear in the Dock"
+        }
+      ],
+      "examples": []
+    }
+  ]
+}
