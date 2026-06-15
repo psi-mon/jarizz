@@ -1,6 +1,6 @@
-# mutation-stamp: sha256=3946a0e4eafc7a12d1b360af703cb42d53c6e404203d877062aa4cf8de179c8d
+# mutation-stamp: sha256=99dc38cfb26f4cd698882c728bd9b26f20cd3b33ba1480238ddf69664c2a3b3d
 # acceptance-mutation-manifest-begin
-# {"version":1,"tested_at":"2026-06-12T17:18:15Z","feature_name":"Popover toggle and dismiss","feature_path":"features/app_shell/popover.feature","background_hash":"151a63a15af270e9d7b0dafe5376b29f80e482c8414fb0236be330f9be34738f","implementation_hash":"unknown","scenarios":[]}
+# {"version":1,"tested_at":"2026-06-15T11:48:19Z","feature_name":"Panel toggle and dismiss","feature_path":"features/app_shell/popover.feature","background_hash":"151a63a15af270e9d7b0dafe5376b29f80e482c8414fb0236be330f9be34738f","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
 Feature: Panel toggle and dismiss
