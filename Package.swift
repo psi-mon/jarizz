@@ -32,7 +32,8 @@ let package = Package(
         .testTarget(
             name: "JarizzAcceptanceTests",
             dependencies: ["JarizzCore"],
-            path: "Tests/JarizzAcceptanceTests"
+            path: "Tests/JarizzAcceptanceTests",
+            exclude: ["ir"]
         ),
         .testTarget(
             name: "JarizzCorePropertyTests",

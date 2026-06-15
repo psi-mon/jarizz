@@ -103,23 +103,21 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         let expected = Double(extractQuoted(text)) ?? 0
         XCTAssertEqual(PanelGeometry.frame(for: screenRect(world)).midY, expected)
     }),
-    ("Then", #"the panel width is "(\d+)""#, { world, text in
-        let expected = Double(extractQuoted(text)) ?? 0
-        XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).width, expected)
-    }),
-    ("And", #"the panel height is "(\d+)""#, { world, text in
-        let expected = Double(extractQuoted(text)) ?? 0
-        XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).height, expected)
-    }),
-    ("Then", #"the panel content width is "(\d+)""#, { world, text in
-        let expected = Double(extractQuoted(text)) ?? 0
-        XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).width, expected)
-    }),
-    ("And", #"the panel content height is "(\d+)""#, { world, text in
-        let expected = Double(extractQuoted(text)) ?? 0
-        XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).height, expected)
-    }),
+    ("Then", #"the panel width is "(\d+)""#, assertPanelWidth),
+    ("And", #"the panel height is "(\d+)""#, assertPanelHeight),
+    ("Then", #"the panel content width is "(\d+)""#, assertPanelWidth),
+    ("And", #"the panel content height is "(\d+)""#, assertPanelHeight),
 ]
+
+private func assertPanelWidth(_ world: inout AcceptanceWorld, _ text: String) {
+    let expected = Double(extractQuoted(text)) ?? 0
+    XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).width, expected)
+}
+
+private func assertPanelHeight(_ world: inout AcceptanceWorld, _ text: String) {
+    let expected = Double(extractQuoted(text)) ?? 0
+    XCTAssertEqual(PanelGeometry.size(for: screenRect(world)).height, expected)
+}
 
 private func screenRect(_ world: AcceptanceWorld) -> CGRect {
     CGRect(x: world.screenOriginX, y: world.screenOriginY, width: world.screenWidth, height: world.screenHeight)
