@@ -1,8 +1,3 @@
-# mutation-stamp: sha256=99dc38cfb26f4cd698882c728bd9b26f20cd3b33ba1480238ddf69664c2a3b3d
-# acceptance-mutation-manifest-begin
-# {"version":1,"tested_at":"2026-06-15T13:13:42Z","feature_name":"Panel toggle and dismiss","feature_path":"features/app_shell/popover.feature","background_hash":"151a63a15af270e9d7b0dafe5376b29f80e482c8414fb0236be330f9be34738f","implementation_hash":"unknown","scenarios":[]}
-# acceptance-mutation-manifest-end
-
 Feature: Panel toggle and dismiss
 
   Background:
@@ -31,12 +26,6 @@ Feature: Panel toggle and dismiss
     Given the panel is visible
     When the user clicks the menubar icon
     Then the panel is hidden
-
-  # app-shell-007
-  Scenario: Panel displays placeholder content
-    Given the panel is hidden
-    When the user presses the global hotkey "LeftShift+RightCommand+]"
-    Then the panel displays the text "jarizz"
 
   # app-shell-008
   Scenario: Panel dismisses on Escape key

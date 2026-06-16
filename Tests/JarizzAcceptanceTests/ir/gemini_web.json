@@ -1,0 +1,143 @@
+{
+  "name": "Gemini web provider",
+  "background": [
+    {
+      "keyword": "Given",
+      "text": "the app is running"
+    },
+    {
+      "keyword": "And",
+      "text": "the panel is hidden"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Panel loads the Gemini web app on first show",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel content URL is \"https://gemini.google.com/app\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "User can complete Google sign-in inside the panel",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "And",
+          "text": "the user is not signed in to Google"
+        },
+        {
+          "keyword": "When",
+          "text": "the user completes Google sign-in inside the panel"
+        },
+        {
+          "keyword": "Then",
+          "text": "the user is signed in to Google inside the panel"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Google authentication popup opens inside the app",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "And",
+          "text": "the user has initiated Google sign-in"
+        },
+        {
+          "keyword": "When",
+          "text": "Google authentication requires a secondary window"
+        },
+        {
+          "keyword": "Then",
+          "text": "the secondary window opens inside the app"
+        },
+        {
+          "keyword": "And",
+          "text": "the user can complete sign-in without switching to an external browser"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Hiding and showing the panel does not reload the web view",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "And",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "And",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the web view navigation count is \"1\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Google session persists after the app is restarted",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the user is signed in to Google inside the panel"
+        },
+        {
+          "keyword": "When",
+          "text": "the user quits the app"
+        },
+        {
+          "keyword": "And",
+          "text": "the user launches the app"
+        },
+        {
+          "keyword": "And",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the user is signed in to Google inside the panel"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Panel shows an error message when the network is unavailable",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the network is unavailable"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel displays \"No network connection — check your internet and try again\""
+        }
+      ],
+      "examples": []
+    }
+  ]
+}

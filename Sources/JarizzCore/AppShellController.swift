@@ -7,8 +7,19 @@ public struct AppShellController {
     public let placeholderText: String = "jarizz"
     public let dockIconHidden: Bool = true
     public let panelAnimatesOnShow: Bool = true
+    public let webProviderURL: String = "https://gemini.google.com/app"
+    public private(set) var webNavigationCount: Int = 0
+    public private(set) var networkErrorMessage: String? = nil
 
     public init() {}
+
+    public mutating func notifyWebViewDidLoad() {
+        webNavigationCount += 1
+    }
+
+    public mutating func setNetworkUnavailable() {
+        networkErrorMessage = "No network connection — check your internet and try again"
+    }
 
     public mutating func launch() { isRunning = true }
 
