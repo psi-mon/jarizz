@@ -1,5 +1,6 @@
 import XCTest
 import JarizzCore
+import JarizzCoreTestHelpers
 
 // (keyword, regex-pattern, handler)
 // keyword "*" matches any keyword

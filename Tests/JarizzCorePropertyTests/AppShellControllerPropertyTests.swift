@@ -1,5 +1,6 @@
 import XCTest
 @testable import JarizzCore
+import JarizzCoreTestHelpers
 
 final class AppShellControllerPropertyTests: XCTestCase {
 
