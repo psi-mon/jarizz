@@ -1,5 +1,4 @@
 import AppKit
-import SwiftUI
 import JarizzCore
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -7,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: NSPanel?
     private var eventMonitor: Any?
     private var shell = AppShellController()
+    private var geminiWebView: GeminiWebView?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
@@ -43,7 +43,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         p.animationBehavior = .utilityWindow
         p.hidesOnDeactivate = false
         p.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        p.contentView = NSHostingView(rootView: PlaceholderView())
+        let webAdapter = GeminiWebView(url: "https://gemini.google.com/app")
+        shell.configure(adapter: webAdapter)
+        geminiWebView = webAdapter
+        p.contentView = webAdapter.webView
         panel = p
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
