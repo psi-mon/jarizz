@@ -7,14 +7,13 @@ public struct AppShellController {
     public let placeholderText: String = "jarizz"
     public let dockIconHidden: Bool = true
     public let panelAnimatesOnShow: Bool = true
-    public let webProviderURL: String = "https://gemini.google.com/app"
-    public private(set) var webNavigationCount: Int = 0
     public private(set) var networkErrorMessage: String? = nil
+    public private(set) var webAdapter: (any WebProviderAdapter)?
 
     public init() {}
 
-    public mutating func notifyWebViewDidLoad() {
-        webNavigationCount += 1
+    public mutating func configure(adapter: any WebProviderAdapter) {
+        webAdapter = adapter
     }
 
     public mutating func setNetworkUnavailable() {
@@ -23,7 +22,13 @@ public struct AppShellController {
 
     public mutating func launch() { isRunning = true }
 
-    public mutating func togglePopover() { popoverState.toggle() }
+    public mutating func togglePopover() {
+        popoverState.toggle()
+        if popoverState.isVisible, let adapter = webAdapter,
+           adapter.navigationCount == 0, networkErrorMessage == nil {
+            adapter.navigate(to: adapter.url)
+        }
+    }
 
     public mutating func dismissPopover() { popoverState.hide() }
 

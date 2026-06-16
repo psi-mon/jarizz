@@ -42,27 +42,6 @@ final class AppShellControllerTests: XCTestCase {
         XCTAssertEqual(AppShellController().hotkey, Hotkey.defaultHotkey)
     }
 
-    func test_webProviderURL_isGemini() {
-        XCTAssertEqual(AppShellController().webProviderURL, "https://gemini.google.com/app")
-    }
-
-    func test_webNavigationCount_startsAtZero() {
-        XCTAssertEqual(AppShellController().webNavigationCount, 0)
-    }
-
-    func test_notifyWebViewDidLoad_incrementsCount() {
-        var ctrl = AppShellController()
-        ctrl.notifyWebViewDidLoad()
-        XCTAssertEqual(ctrl.webNavigationCount, 1)
-    }
-
-    func test_notifyWebViewDidLoad_canBeCalledMultipleTimes() {
-        var ctrl = AppShellController()
-        ctrl.notifyWebViewDidLoad()
-        ctrl.notifyWebViewDidLoad()
-        XCTAssertEqual(ctrl.webNavigationCount, 2)
-    }
-
     func test_networkErrorMessage_nilByDefault() {
         XCTAssertNil(AppShellController().networkErrorMessage)
     }
@@ -72,5 +51,47 @@ final class AppShellControllerTests: XCTestCase {
         ctrl.setNetworkUnavailable()
         XCTAssertEqual(ctrl.networkErrorMessage,
                        "No network connection — check your internet and try again")
+    }
+
+    func test_configure_setsAdapter() {
+        var ctrl = AppShellController()
+        let adapter = MockWebProviderAdapter(url: "https://example.com")
+        ctrl.configure(adapter: adapter)
+        XCTAssertNotNil(ctrl.webAdapter)
+    }
+
+    func test_togglePopover_whenHidden_navigatesToAdapterURL() {
+        var ctrl = AppShellController()
+        let adapter = MockWebProviderAdapter(url: "https://gemini.google.com/app")
+        ctrl.configure(adapter: adapter)
+        ctrl.togglePopover()
+        XCTAssertEqual(adapter.lastNavigatedURL, "https://gemini.google.com/app")
+    }
+
+    func test_togglePopover_navigatesOnlyOnFirstShow() {
+        var ctrl = AppShellController()
+        let adapter = MockWebProviderAdapter(url: "https://gemini.google.com/app")
+        ctrl.configure(adapter: adapter)
+        ctrl.togglePopover() // show → navigate
+        ctrl.togglePopover() // hide
+        ctrl.togglePopover() // show again → no navigate
+        XCTAssertEqual(adapter.navigationCount, 1)
+    }
+
+    func test_togglePopover_doesNotNavigateWhenNetworkUnavailable() {
+        var ctrl = AppShellController()
+        let adapter = MockWebProviderAdapter(url: "https://gemini.google.com/app")
+        ctrl.configure(adapter: adapter)
+        ctrl.setNetworkUnavailable()
+        ctrl.togglePopover()
+        XCTAssertEqual(adapter.navigationCount, 0)
+    }
+
+    func test_mockAdapter_usesPersistentSessionStorage() {
+        XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").usesPersistentSessionStorage)
+    }
+
+    func test_mockAdapter_handlesNewWindowsInApp() {
+        XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").handlesNewWindowsInApp)
     }
 }

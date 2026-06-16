@@ -30,10 +30,10 @@ final class AppShellControllerPropertyTests: XCTestCase {
     }
 
     func test_prop_navigationCountAccumulates() {
-        forAll([0, 1, 2, 5], "webNavigationCount equals notifyWebViewDidLoad call count") { n in
-            var ctrl = AppShellController()
-            for _ in 0..<n { ctrl.notifyWebViewDidLoad() }
-            return ctrl.webNavigationCount == n
+        forAll([0, 1, 2, 5], "MockWebProviderAdapter.navigationCount equals navigate() call count") { n in
+            let adapter = MockWebProviderAdapter(url: "https://example.com")
+            for _ in 0..<n { adapter.navigate(to: adapter.url) }
+            return adapter.navigationCount == n
         }
     }
 
@@ -46,11 +46,13 @@ final class AppShellControllerPropertyTests: XCTestCase {
     }
 
     func test_prop_navigationCountUnaffectedByNetworkError() {
-        forAll([true, false], "webNavigationCount unaffected by setNetworkUnavailable") { setError in
+        forAll([true, false], "adapter navigation count unaffected by setNetworkUnavailable") { setError in
+            let adapter = MockWebProviderAdapter(url: "https://example.com")
+            adapter.navigate(to: adapter.url)
             var ctrl = AppShellController()
-            ctrl.notifyWebViewDidLoad()
+            ctrl.configure(adapter: adapter)
             if setError { ctrl.setNetworkUnavailable() }
-            return ctrl.webNavigationCount == 1
+            return adapter.navigationCount == 1
         }
     }
 }
