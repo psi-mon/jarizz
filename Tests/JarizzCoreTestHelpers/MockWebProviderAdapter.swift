@@ -1,3 +1,5 @@
+import JarizzCore
+
 public final class MockWebProviderAdapter: WebProviderAdapter {
     public let url: String
     public private(set) var navigationCount: Int = 0
