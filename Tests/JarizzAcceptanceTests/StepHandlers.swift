@@ -36,6 +36,11 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.screenWidth = Double(parts[safe: 0] ?? "0") ?? 0
         world.screenHeight = Double(parts[safe: 1] ?? "0") ?? 0
     }),
+    ("Given", #"a web provider is configured with URL "(.+)""#, { world, text in
+        let adapter = MockWebProviderAdapter(url: extractQuoted(text))
+        world.webAdapter = adapter
+        world.controller.configure(adapter: adapter)
+    }),
     ("Given", "the network is unavailable", { world, _ in
         world.controller.setNetworkUnavailable()
     }),
@@ -50,11 +55,6 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", #"the user presses the global hotkey "(.+)""#, { world, _ in
         world.controller.togglePopover()
-        if world.controller.popoverState.isVisible
-            && world.controller.webNavigationCount == 0
-            && world.controller.networkErrorMessage == nil {
-            world.controller.notifyWebViewDidLoad()
-        }
     }),
     // Manual-only action stubs
     ("When", "the user completes Google sign-in inside the panel", { _, _ in }),
@@ -126,11 +126,17 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("And", #"the panel content height is "(\d+)""#, assertPanelHeight),
 
     // Web provider assertions
-    ("Then", #"the panel content URL is "(.+)""#, { world, text in
-        XCTAssertEqual(world.controller.webProviderURL, extractQuoted(text))
+    ("Then", #"the web provider has navigated to "(.+)""#, { world, text in
+        XCTAssertEqual(world.webAdapter?.lastNavigatedURL, extractQuoted(text))
     }),
-    ("Then", #"the web view navigation count is "(\d+)""#, { world, text in
-        XCTAssertEqual(world.controller.webNavigationCount, Int(extractQuoted(text)) ?? -1)
+    ("Then", #"the web provider navigation count is "(\d+)""#, { world, text in
+        XCTAssertEqual(world.webAdapter?.navigationCount, Int(extractQuoted(text)) ?? -1)
+    }),
+    ("Then", "the web provider uses persistent session storage", { world, _ in
+        XCTAssertTrue(world.webAdapter?.usesPersistentSessionStorage ?? false)
+    }),
+    ("Then", "the web provider handles new windows inside the app", { world, _ in
+        XCTAssertTrue(world.webAdapter?.handlesNewWindowsInApp ?? false)
     }),
     ("Then", #"the panel displays "(.+)""#, { world, text in
         XCTAssertEqual(world.controller.networkErrorMessage, extractQuoted(text))
