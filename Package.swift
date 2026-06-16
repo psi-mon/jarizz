@@ -24,20 +24,25 @@ let package = Package(
                 .linkedFramework("SwiftUI"),
             ]
         ),
+        .target(
+            name: "JarizzCoreTestHelpers",
+            dependencies: ["JarizzCore"],
+            path: "Tests/JarizzCoreTestHelpers"
+        ),
         .testTarget(
             name: "JarizzCoreTests",
-            dependencies: ["JarizzCore"],
+            dependencies: ["JarizzCore", "JarizzCoreTestHelpers"],
             path: "Tests/JarizzCoreTests"
         ),
         .testTarget(
             name: "JarizzAcceptanceTests",
-            dependencies: ["JarizzCore"],
+            dependencies: ["JarizzCore", "JarizzCoreTestHelpers"],
             path: "Tests/JarizzAcceptanceTests",
             exclude: ["ir"]
         ),
         .testTarget(
             name: "JarizzCorePropertyTests",
-            dependencies: ["JarizzCore"],
+            dependencies: ["JarizzCore", "JarizzCoreTestHelpers"],
             path: "Tests/JarizzCorePropertyTests"
         ),
     ]

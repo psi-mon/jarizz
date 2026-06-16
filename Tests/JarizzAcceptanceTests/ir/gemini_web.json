@@ -7,12 +7,16 @@
     },
     {
       "keyword": "And",
+      "text": "a web provider is configured with URL \"https://gemini.google.com/app\""
+    },
+    {
+      "keyword": "And",
       "text": "the panel is hidden"
     }
   ],
   "scenarios": [
     {
-      "name": "Panel loads the Gemini web app on first show",
+      "name": "Panel navigates the web provider to the Gemini URL on first show",
       "steps": [
         {
           "keyword": "When",
@@ -20,7 +24,7 @@
         },
         {
           "keyword": "Then",
-          "text": "the panel content URL is \"https://gemini.google.com/app\""
+          "text": "the web provider has navigated to \"https://gemini.google.com/app\""
         }
       ],
       "examples": []
@@ -74,7 +78,7 @@
       "examples": []
     },
     {
-      "name": "Hiding and showing the panel does not reload the web view",
+      "name": "Hiding and showing the panel does not reload the web provider",
       "steps": [
         {
           "keyword": "When",
@@ -90,7 +94,7 @@
         },
         {
           "keyword": "Then",
-          "text": "the web view navigation count is \"1\""
+          "text": "the web provider navigation count is \"1\""
         }
       ],
       "examples": []
@@ -135,6 +139,34 @@
         {
           "keyword": "Then",
           "text": "the panel displays \"No network connection — check your internet and try again\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Web provider uses persistent session storage",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider uses persistent session storage"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Web provider handles new windows inside the app",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider handles new windows inside the app"
         }
       ],
       "examples": []

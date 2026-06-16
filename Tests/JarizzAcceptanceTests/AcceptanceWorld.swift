@@ -1,5 +1,6 @@
 import XCTest
 import JarizzCore
+import JarizzCoreTestHelpers
 
 public struct AcceptanceWorld {
     public var controller = AppShellController()
@@ -8,6 +9,7 @@ public struct AcceptanceWorld {
     public var screenOriginY: Double = 0
     public var screenWidth: Double = 0
     public var screenHeight: Double = 0
+    public var webAdapter: MockWebProviderAdapter?
 
     public init() {}
 }
