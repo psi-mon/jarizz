@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/refactorer/Tests/JarizzAcceptanceTests/ir/popover.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/popover.json
 final class PanelToggleAndDismissAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/popover.json"
 
@@ -46,20 +46,10 @@ final class PanelToggleAndDismissAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is hidden")
     }
 
-    // Scenario: Panel displays placeholder content
-    func test_PanelDisplaysPlaceholderContent_example1() {
-        var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel displays the text \"jarizz\"")
-    }
-
     // Scenario: Panel dismisses on Escape key
     func test_PanelDismissesOnEscapeKey_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses \"Escape\"")
@@ -69,7 +59,7 @@ final class PanelToggleAndDismissAcceptanceTests: XCTestCase {
     // Scenario: Panel dismisses on outside click
     func test_PanelDismissesOnOutsideClick_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 6, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user clicks outside the panel")

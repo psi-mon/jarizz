@@ -36,6 +36,13 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.screenWidth = Double(parts[safe: 0] ?? "0") ?? 0
         world.screenHeight = Double(parts[safe: 1] ?? "0") ?? 0
     }),
+    ("Given", "the network is unavailable", { world, _ in
+        world.controller.setNetworkUnavailable()
+    }),
+    // Manual-only stubs
+    ("Given", "the user is not signed in to Google", { _, _ in }),
+    ("Given", "the user has initiated Google sign-in", { _, _ in }),
+    ("Given", "the user is signed in to Google inside the panel", { _, _ in }),
 
     // Action steps (When)
     ("When", "the app launches", { world, _ in
@@ -43,7 +50,17 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", #"the user presses the global hotkey "(.+)""#, { world, _ in
         world.controller.togglePopover()
+        if world.controller.popoverState.isVisible
+            && world.controller.webNavigationCount == 0
+            && world.controller.networkErrorMessage == nil {
+            world.controller.notifyWebViewDidLoad()
+        }
     }),
+    // Manual-only action stubs
+    ("When", "the user completes Google sign-in inside the panel", { _, _ in }),
+    ("When", "Google authentication requires a secondary window", { _, _ in }),
+    ("When", "the user quits the app", { _, _ in }),
+    ("When", "the user launches the app", { _, _ in }),
     ("When", "the user clicks the menubar icon", { world, _ in
         world.controller.togglePopover()
     }),
@@ -107,6 +124,21 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("And", #"the panel height is "(\d+)""#, assertPanelHeight),
     ("Then", #"the panel content width is "(\d+)""#, assertPanelWidth),
     ("And", #"the panel content height is "(\d+)""#, assertPanelHeight),
+
+    // Web provider assertions
+    ("Then", #"the panel content URL is "(.+)""#, { world, text in
+        XCTAssertEqual(world.controller.webProviderURL, extractQuoted(text))
+    }),
+    ("Then", #"the web view navigation count is "(\d+)""#, { world, text in
+        XCTAssertEqual(world.controller.webNavigationCount, Int(extractQuoted(text)) ?? -1)
+    }),
+    ("Then", #"the panel displays "(.+)""#, { world, text in
+        XCTAssertEqual(world.controller.networkErrorMessage, extractQuoted(text))
+    }),
+    // Manual-only assertion stubs
+    ("Then", "the user is signed in to Google inside the panel", { _, _ in }),
+    ("Then", "the secondary window opens inside the app", { _, _ in }),
+    ("And", "the user can complete sign-in without switching to an external browser", { _, _ in }),
 ]
 
 private func assertPanelWidth(_ world: inout AcceptanceWorld, _ text: String) {

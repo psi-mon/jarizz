@@ -80,24 +80,6 @@
       "examples": []
     },
     {
-      "name": "Panel displays placeholder content",
-      "steps": [
-        {
-          "keyword": "Given",
-          "text": "the panel is hidden"
-        },
-        {
-          "keyword": "When",
-          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
-        },
-        {
-          "keyword": "Then",
-          "text": "the panel displays the text \"jarizz\""
-        }
-      ],
-      "examples": []
-    },
-    {
       "name": "Panel dismisses on Escape key",
       "steps": [
         {
