@@ -22,6 +22,7 @@ let package = Package(
                 .linkedFramework("AppKit"),
                 .linkedFramework("Carbon"),
                 .linkedFramework("SwiftUI"),
+                .linkedFramework("WebKit"),
             ]
         ),
         .target(
