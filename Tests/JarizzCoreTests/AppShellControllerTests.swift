@@ -41,4 +41,36 @@ final class AppShellControllerTests: XCTestCase {
     func test_hotkeyIsDefault() {
         XCTAssertEqual(AppShellController().hotkey, Hotkey.defaultHotkey)
     }
+
+    func test_webProviderURL_isGemini() {
+        XCTAssertEqual(AppShellController().webProviderURL, "https://gemini.google.com/app")
+    }
+
+    func test_webNavigationCount_startsAtZero() {
+        XCTAssertEqual(AppShellController().webNavigationCount, 0)
+    }
+
+    func test_notifyWebViewDidLoad_incrementsCount() {
+        var ctrl = AppShellController()
+        ctrl.notifyWebViewDidLoad()
+        XCTAssertEqual(ctrl.webNavigationCount, 1)
+    }
+
+    func test_notifyWebViewDidLoad_canBeCalledMultipleTimes() {
+        var ctrl = AppShellController()
+        ctrl.notifyWebViewDidLoad()
+        ctrl.notifyWebViewDidLoad()
+        XCTAssertEqual(ctrl.webNavigationCount, 2)
+    }
+
+    func test_networkErrorMessage_nilByDefault() {
+        XCTAssertNil(AppShellController().networkErrorMessage)
+    }
+
+    func test_setNetworkUnavailable_setsErrorMessage() {
+        var ctrl = AppShellController()
+        ctrl.setNetworkUnavailable()
+        XCTAssertEqual(ctrl.networkErrorMessage,
+                       "No network connection — check your internet and try again")
+    }
 }
