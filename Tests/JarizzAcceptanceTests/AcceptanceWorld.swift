@@ -1,5 +1,6 @@
 import XCTest
 import JarizzCore
+import JarizzCoreTestHelpers
 
 public struct AcceptanceWorld {
     public var controller = AppShellController()

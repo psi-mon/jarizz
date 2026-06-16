@@ -1,5 +1,6 @@
 import XCTest
 @testable import JarizzCore
+import JarizzCoreTestHelpers
 
 final class AppShellControllerPropertyTests: XCTestCase {
 
@@ -52,6 +53,19 @@ final class AppShellControllerPropertyTests: XCTestCase {
             var ctrl = AppShellController()
             ctrl.configure(adapter: adapter)
             if setError { ctrl.setNetworkUnavailable() }
+            return adapter.navigationCount == 1
+        }
+    }
+
+    func test_prop_navigatesExactlyOnceRegardlessOfToggleCycles() {
+        forAll([1, 2, 3, 5], "navigation happens exactly once across any number of show/hide cycles") { cycles in
+            var ctrl = AppShellController()
+            let adapter = MockWebProviderAdapter(url: "https://example.com")
+            ctrl.configure(adapter: adapter)
+            for _ in 0..<cycles {
+                ctrl.togglePopover() // show
+                ctrl.togglePopover() // hide
+            }
             return adapter.navigationCount == 1
         }
     }
