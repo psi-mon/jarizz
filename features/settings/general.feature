@@ -108,3 +108,12 @@ Feature: Settings — General
     Examples:
       | percent |
       | 70      |
+
+  # settings-011
+  # simulation-friendly
+  Scenario: Opening Settings dismisses the main panel if it is visible
+    Given the app is running
+    And the panel is visible
+    When the user opens Settings
+    Then the panel is hidden
+    And the Settings window is visible

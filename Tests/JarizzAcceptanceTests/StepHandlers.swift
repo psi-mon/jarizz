@@ -121,6 +121,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("When", #"the user sets the panel size to "(\d+)" percent"#, { world, text in
         world.settingsCtrl.setPanelSizePercent(Int(extractQuoted(text)) ?? 50)
     }),
+    ("When", "the user opens Settings", { world, _ in
+        world.controller.openSettings()
+    }),
     ("When", "the app is restarted", { world, _ in
         world.settingsCtrl.reload()
         world.controller = AppShellController()
