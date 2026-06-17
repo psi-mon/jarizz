@@ -265,6 +265,32 @@
           "percent": "70"
         }
       ]
+    },
+    {
+      "name": "Opening Settings dismisses the main panel if it is visible",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "When",
+          "text": "the user opens Settings"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is hidden"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is visible"
+        }
+      ],
+      "examples": []
     }
   ]
 }

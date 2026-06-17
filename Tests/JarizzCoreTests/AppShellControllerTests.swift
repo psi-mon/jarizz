@@ -103,4 +103,18 @@ final class AppShellControllerTests: XCTestCase {
     func test_mockAdapter_focusesInputFieldOnShow() {
         XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").focusesInputFieldOnShow)
     }
+
+    func test_openSettings_dismissesPanel() {
+        var ctrl = AppShellController()
+        ctrl.togglePopover()
+        XCTAssertTrue(ctrl.popoverState.isVisible)
+        ctrl.openSettings()
+        XCTAssertFalse(ctrl.popoverState.isVisible)
+    }
+
+    func test_openSettings_whenPanelHidden_remainsHidden() {
+        var ctrl = AppShellController()
+        ctrl.openSettings()
+        XCTAssertFalse(ctrl.popoverState.isVisible)
+    }
 }
