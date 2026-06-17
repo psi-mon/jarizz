@@ -6,6 +6,7 @@ public final class MockWebProviderAdapter: WebProviderAdapter {
     public private(set) var lastNavigatedURL: String?
     public let usesPersistentSessionStorage: Bool = true
     public let handlesNewWindowsInApp: Bool = true
+    public let authSessionIsNonEphemeral: Bool = true
 
     public init(url: String) { self.url = url }
 

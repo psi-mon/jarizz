@@ -95,4 +95,8 @@ final class AppShellControllerTests: XCTestCase {
     func test_mockAdapter_handlesNewWindowsInApp() {
         XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").handlesNewWindowsInApp)
     }
+
+    func test_mockAdapter_authSessionIsNonEphemeral() {
+        XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").authSessionIsNonEphemeral)
+    }
 }
