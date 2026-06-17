@@ -8,6 +8,7 @@ final class GeminiWebView: NSObject, WebProviderAdapter {
     private(set) var navigationCount: Int = 0
     let usesPersistentSessionStorage: Bool = true
     let handlesNewWindowsInApp: Bool = true
+    let authSessionIsNonEphemeral: Bool = true
 
     init(url: String) {
         self.url = url
