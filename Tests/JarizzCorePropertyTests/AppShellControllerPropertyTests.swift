@@ -13,6 +13,15 @@ final class AppShellControllerPropertyTests: XCTestCase {
         }
     }
 
+    func test_prop_openSettingsAlwaysHides() {
+        forAll([false, true], "openSettings always results in hidden") { startVisible in
+            var ctrl = AppShellController()
+            if startVisible { ctrl.togglePopover() }
+            ctrl.openSettings()
+            return !ctrl.popoverState.isVisible
+        }
+    }
+
     func test_prop_launchIsIdempotent() {
         var ctrl = AppShellController()
         ctrl.launch()
