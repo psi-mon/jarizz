@@ -1,4 +1,5 @@
 import AppKit
+import SwiftUI
 import JarizzCore
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -6,7 +7,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var panel: NSPanel?
     private var eventMonitor: Any?
     private var shell = AppShellController()
-    private var geminiWebView: GeminiWebView?
+    private var webView: GeminiWebView?
+    private let store = JSONSettingsStore()
+    private lazy var settingsViewModel = SettingsViewModel(store: store)
+    private var settingsWindowController: NSWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
@@ -18,15 +22,64 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         removeHotkey()
     }
 
+    // MARK: - Status item
+
     private func setupStatusItem() {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        if let button = statusItem?.button {
-            button.image = NSImage(systemSymbolName: "bubble.left.and.bubble.right",
-                                   accessibilityDescription: "jarizz")
-            button.action = #selector(statusItemClicked)
-            button.target = self
+        guard let button = statusItem?.button else { return }
+        button.image = NSImage(systemSymbolName: "bubble.left.and.bubble.right",
+                               accessibilityDescription: "jarizz")
+        button.action = #selector(statusItemClicked)
+        button.target = self
+        button.sendAction(on: [.leftMouseUp, .rightMouseDown])
+    }
+
+    @objc private func statusItemClicked() {
+        guard let event = NSApp.currentEvent else { return }
+        if event.type == .rightMouseDown {
+            showContextMenu()
+        } else {
+            togglePanel()
         }
     }
+
+    private func showContextMenu() {
+        let settingsItem = NSMenuItem(title: "Settings…", action: #selector(openSettings), keyEquivalent: "")
+        settingsItem.target = self
+        let quitItem = NSMenuItem(title: "Quit jarizz", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
+        let menu = NSMenu()
+        menu.addItem(settingsItem)
+        menu.addItem(.separator())
+        menu.addItem(quitItem)
+        statusItem?.menu = menu
+        statusItem?.button?.performClick(nil)
+        statusItem?.menu = nil
+    }
+
+    // MARK: - Settings window
+
+    @objc private func openSettings() {
+        if settingsWindowController == nil {
+            let win = NSPanel(
+                contentRect: NSRect(x: 0, y: 0, width: 480, height: 400),
+                styleMask: [.titled, .closable],
+                backing: .buffered,
+                defer: false
+            )
+            win.title = "jarizz Settings"
+            win.contentView = NSHostingView(rootView: SettingsView(
+                vm: settingsViewModel,
+                onHotkeyChange: { [weak self] in self?.updateHotkey() },
+                onProvidersChange: { [weak self] in self?.updatePanelContent() }
+            ))
+            win.center()
+            settingsWindowController = NSWindowController(window: win)
+        }
+        settingsWindowController?.showWindow(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    // MARK: - Panel setup and content
 
     private func setupPanel() {
         let p = NSPanel(
@@ -43,14 +96,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         p.animationBehavior = .utilityWindow
         p.hidesOnDeactivate = false
         p.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        let webAdapter = GeminiWebView(url: "https://gemini.google.com/app")
-        shell.configure(adapter: webAdapter)
-        geminiWebView = webAdapter
-        p.contentView = webAdapter.webView
         panel = p
+        updatePanelContent()
 
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            if event.keyCode == 53 { // Escape
+            if event.keyCode == 53 {
                 self?.dismissPanel()
                 return nil
             }
@@ -58,24 +108,38 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    @objc private func statusItemClicked() {
-        togglePanel()
+    private func updatePanelContent() {
+        guard let p = panel else { return }
+        if let provider = settingsViewModel.controller.activeProvider {
+            if webView?.url != provider.url {
+                shell = AppShellController()
+                let adapter = GeminiWebView(url: provider.url)
+                shell.configure(adapter: adapter)
+                webView = adapter
+                p.contentView = adapter.webView
+            }
+        } else {
+            shell = AppShellController()
+            webView = nil
+            p.contentView = NSHostingView(rootView: NoProviderView())
+        }
     }
+
+    // MARK: - Panel toggle
 
     private func togglePanel() {
         guard let p = panel else { return }
-        if p.isVisible {
-            dismissPanel()
-        } else {
-            showPanel()
-        }
+        if p.isVisible { dismissPanel() } else { showPanel() }
     }
 
     private func showPanel() {
         guard let p = panel else { return }
         let screen = screenForMouse()
-        let frame = shell.panelFrame(for: screen.frame)
-        p.setFrame(frame, display: false)
+        let sizePercent = settingsViewModel.controller.settings.panelSizePercent
+        let factor = CGFloat(sizePercent) / 100.0
+        let size = CGSize(width: screen.frame.width * factor, height: screen.frame.height * factor)
+        let origin = PanelGeometry.origin(for: size, in: screen.frame)
+        p.setFrame(CGRect(origin: origin, size: size), display: false)
         p.alphaValue = 0
         p.makeKeyAndOrderFront(nil)
         NSAnimationContext.runAnimationGroup { ctx in
@@ -112,13 +176,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    // MARK: - Hotkey
+
     private func registerHotkey() {
-        HotkeyMonitor.register(hotkey: shell.hotkey) { [weak self] in
+        let hotkeyString = settingsViewModel.controller.settings.hotkey
+        guard let hotkey = try? Hotkey.parse(hotkeyString) else { return }
+        HotkeyMonitor.register(hotkey: hotkey) { [weak self] in
             self?.togglePanel()
         }
     }
 
     private func removeHotkey() {
         HotkeyMonitor.unregister()
+    }
+
+    private func updateHotkey() {
+        removeHotkey()
+        registerHotkey()
     }
 }
