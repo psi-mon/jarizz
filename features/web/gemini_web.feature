@@ -95,3 +95,16 @@ Feature: Gemini web provider
   Scenario: Web provider system auth session is non-ephemeral
     When the user presses the global hotkey "LeftShift+RightCommand+]"
     Then the web provider auth session is not ephemeral
+
+  # web-011
+  # manual-only: requires Gemini page loaded with input field present
+  Scenario: Gemini input field is focused when the panel becomes visible
+    Given Gemini is loaded and the input field is present
+    When the user presses the global hotkey "LeftShift+RightCommand+]"
+    Then the Gemini input field has focus
+
+  # web-012
+  # simulation-friendly: protocol compliance check
+  Scenario: Web provider focuses the input field when the panel is shown
+    When the user presses the global hotkey "LeftShift+RightCommand+]"
+    Then the web provider focuses the input field on show
