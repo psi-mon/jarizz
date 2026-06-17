@@ -32,6 +32,8 @@ public struct AppShellController {
 
     public mutating func dismissPopover() { popoverState.hide() }
 
+    public mutating func openSettings() { popoverState.hide() }
+
     public func panelFrame(for screenFrame: CGRect) -> CGRect {
         PanelGeometry.frame(for: screenFrame)
     }
