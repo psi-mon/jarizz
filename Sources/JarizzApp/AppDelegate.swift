@@ -59,6 +59,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - Settings window
 
     @objc private func openSettings() {
+        dismissPanel()
         if settingsWindowController == nil {
             let win = NSPanel(
                 contentRect: NSRect(x: 0, y: 0, width: 480, height: 400),
@@ -67,6 +68,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 defer: false
             )
             win.title = "jarizz Settings"
+            win.level = .floating
             win.contentView = NSHostingView(rootView: SettingsView(
                 vm: settingsViewModel,
                 onHotkeyChange: { [weak self] in self?.updateHotkey() },
