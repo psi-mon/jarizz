@@ -1,3 +1,8 @@
+# mutation-stamp: sha256=bf698fe0d2ae8c92254df8ebbd0d0096dd1488fd620475c6880c179d91c60feb
+# acceptance-mutation-manifest-begin
+# {"version":1,"tested_at":"2026-06-17T07:15:58Z","feature_name":"Gemini web provider","feature_path":"features/web/gemini_web.feature","background_hash":"1bbaaa5b74478580377aaf1cdca2c61009fe6d440cd42b6bc24681d801488cf3","implementation_hash":"unknown","scenarios":[]}
+# acceptance-mutation-manifest-end
+
 Feature: Gemini web provider
   # Slice completion requires BOTH layers:
   # (a) JarizzCore — WebProviderAdapter protocol; AppShellController

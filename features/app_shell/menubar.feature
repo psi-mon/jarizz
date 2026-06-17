@@ -1,6 +1,6 @@
 # mutation-stamp: sha256=7ef09aac1be7ecd2da7a4e4cb1dfb74a689df5ab158a0764e0e88e4f9d833cdb
 # acceptance-mutation-manifest-begin
-# {"version":1,"tested_at":"2026-06-16T14:20:24Z","feature_name":"Menubar icon","feature_path":"features/app_shell/menubar.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
+# {"version":1,"tested_at":"2026-06-17T07:15:58Z","feature_name":"Menubar icon","feature_path":"features/app_shell/menubar.feature","background_hash":"74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
 Feature: Menubar icon
