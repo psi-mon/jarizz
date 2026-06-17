@@ -20,8 +20,7 @@ public struct SettingsController {
     }
 
     public mutating func addProvider(name: String, url: String) throws {
-        guard !name.isEmpty else { throw ProviderError.nameRequired }
-        guard isValidProviderURL(url) else { throw ProviderError.invalidURL }
+        try validateProviderInput(name: name, url: url)
         guard !settings.providers.contains(where: { $0.url == url }) else { throw ProviderError.duplicateURL }
         settings.providers.append(Provider(name: name, url: url))
         store.save(settings)
@@ -33,8 +32,7 @@ public struct SettingsController {
     }
 
     public mutating func editProvider(id: UUID, name: String, url: String) throws {
-        guard !name.isEmpty else { throw ProviderError.nameRequired }
-        guard isValidProviderURL(url) else { throw ProviderError.invalidURL }
+        try validateProviderInput(name: name, url: url)
         guard !settings.providers.contains(where: { $0.url == url && $0.id != id }) else {
             throw ProviderError.duplicateURL
         }
@@ -63,6 +61,11 @@ public struct SettingsController {
     public mutating func reload() {
         settings = store.load()
     }
+}
+
+private func validateProviderInput(name: String, url: String) throws {
+    guard !name.isEmpty else { throw ProviderError.nameRequired }
+    guard isValidProviderURL(url) else { throw ProviderError.invalidURL }
 }
 
 private func isValidProviderURL(_ string: String) -> Bool {
