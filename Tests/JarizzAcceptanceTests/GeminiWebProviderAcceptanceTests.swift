@@ -130,4 +130,27 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider auth session is not ephemeral")
     }
+
+    // Scenario: Gemini input field is focused when the panel becomes visible
+    func test_GeminiInputFieldIsFocusedWhenThePanelBecomesVisible_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 10, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "Gemini is loaded and the input field is present")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the Gemini input field has focus")
+    }
+
+    // Scenario: Web provider focuses the input field when the panel is shown
+    func test_WebProviderFocusesTheInputFieldWhenThePanelIsShown_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 11, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider focuses the input field on show")
+    }
 }
