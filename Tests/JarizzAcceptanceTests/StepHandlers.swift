@@ -47,6 +47,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     // Manual-only stubs
     ("Given", "the user is not signed in to Google", { _, _ in }),
+    ("Given", "the user is not signed in to Google in the panel", { _, _ in }),
     ("Given", "the user has initiated Google sign-in", { _, _ in }),
     ("Given", "the user is signed in to Google inside the panel", { _, _ in }),
 
@@ -60,6 +61,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     // Manual-only action stubs
     ("When", "the user completes Google sign-in inside the panel", { _, _ in }),
     ("When", "Google authentication requires a secondary window", { _, _ in }),
+    ("When", "the user initiates Google sign-in", { _, _ in }),
+    ("When", "jarizz presents a system authentication session", { _, _ in }),
+    ("When", "the user initiates passkey sign-in", { _, _ in }),
     ("When", "the user quits the app", { _, _ in }),
     ("When", "the user launches the app", { _, _ in }),
     ("When", "the user clicks the menubar icon", { world, _ in
@@ -139,11 +143,18 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Then", "the web provider handles new windows inside the app", { world, _ in
         XCTAssertTrue(world.webAdapter?.handlesNewWindowsInApp ?? false)
     }),
+    ("Then", "the web provider auth session is not ephemeral", { world, _ in
+        XCTAssertTrue(world.webAdapter?.authSessionIsNonEphemeral ?? false)
+    }),
     ("Then", #"the panel displays "(.+)""#, { world, text in
         XCTAssertEqual(world.controller.networkErrorMessage, extractQuoted(text))
     }),
     // Manual-only assertion stubs
     ("Then", "the user is signed in to Google inside the panel", { _, _ in }),
+    ("Then", "jarizz presents a system authentication session for Google sign-in", { _, _ in }),
+    ("And", "after sign-in completes the user is signed in to Google in the panel", { _, _ in }),
+    ("Then", "the session can use an existing signed-in Google account from the system browser", { _, _ in }),
+    ("Then", "jarizz presents a system authentication session that supports passkeys", { _, _ in }),
     ("Then", "the secondary window opens inside the app", { _, _ in }),
     ("And", "the user can complete sign-in without switching to an external browser", { _, _ in }),
 ]

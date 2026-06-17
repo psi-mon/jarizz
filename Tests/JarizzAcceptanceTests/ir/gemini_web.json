@@ -30,7 +30,7 @@
       "examples": []
     },
     {
-      "name": "User can complete Google sign-in inside the panel",
+      "name": "User can complete Google sign-in via system authentication session",
       "steps": [
         {
           "keyword": "Given",
@@ -42,17 +42,21 @@
         },
         {
           "keyword": "When",
-          "text": "the user completes Google sign-in inside the panel"
+          "text": "the user initiates Google sign-in"
         },
         {
           "keyword": "Then",
-          "text": "the user is signed in to Google inside the panel"
+          "text": "jarizz presents a system authentication session for Google sign-in"
+        },
+        {
+          "keyword": "And",
+          "text": "after sign-in completes the user is signed in to Google in the panel"
         }
       ],
       "examples": []
     },
     {
-      "name": "Google authentication popup opens inside the app",
+      "name": "System authentication session can reuse an existing Google account",
       "steps": [
         {
           "keyword": "Given",
@@ -60,19 +64,19 @@
         },
         {
           "keyword": "And",
-          "text": "the user has initiated Google sign-in"
+          "text": "the user is not signed in to Google in the panel"
         },
         {
           "keyword": "When",
-          "text": "Google authentication requires a secondary window"
+          "text": "jarizz presents a system authentication session"
         },
         {
           "keyword": "Then",
-          "text": "the secondary window opens inside the app"
+          "text": "the session can use an existing signed-in Google account from the system browser"
         },
         {
           "keyword": "And",
-          "text": "the user can complete sign-in without switching to an external browser"
+          "text": "after sign-in completes the user is signed in to Google in the panel"
         }
       ],
       "examples": []
@@ -167,6 +171,46 @@
         {
           "keyword": "Then",
           "text": "the web provider handles new windows inside the app"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Passkey sign-in works through system authentication session",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "And",
+          "text": "the user is not signed in to Google"
+        },
+        {
+          "keyword": "When",
+          "text": "the user initiates passkey sign-in"
+        },
+        {
+          "keyword": "Then",
+          "text": "jarizz presents a system authentication session that supports passkeys"
+        },
+        {
+          "keyword": "And",
+          "text": "after sign-in completes the user is signed in to Google in the panel"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Web provider system auth session is non-ephemeral",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider auth session is not ephemeral"
         }
       ],
       "examples": []
