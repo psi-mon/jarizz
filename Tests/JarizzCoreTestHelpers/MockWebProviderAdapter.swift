@@ -7,6 +7,7 @@ public final class MockWebProviderAdapter: WebProviderAdapter {
     public let usesPersistentSessionStorage: Bool = true
     public let handlesNewWindowsInApp: Bool = true
     public let authSessionIsNonEphemeral: Bool = true
+    public let focusesInputFieldOnShow: Bool = true
 
     public init(url: String) { self.url = url }
 

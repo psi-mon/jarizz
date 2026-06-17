@@ -4,5 +4,6 @@ public protocol WebProviderAdapter: AnyObject {
     var usesPersistentSessionStorage: Bool { get }
     var handlesNewWindowsInApp: Bool { get }
     var authSessionIsNonEphemeral: Bool { get }
+    var focusesInputFieldOnShow: Bool { get }
     func navigate(to url: String)
 }
