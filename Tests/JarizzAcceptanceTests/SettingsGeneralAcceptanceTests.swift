@@ -123,4 +123,15 @@ final class SettingsGeneralAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the app is restarted")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel size is \"<percent>\" percent of the screen frame")
     }
+
+    // Scenario: Opening Settings dismisses the main panel if it is visible
+    func test_OpeningSettingsDismissesTheMainPanelIfItIsVisible_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 10, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user opens Settings")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the Settings window is visible")
+    }
 }
