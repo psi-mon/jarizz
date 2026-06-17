@@ -182,4 +182,14 @@ final class SettingsControllerTests: XCTestCase {
         ctrl.reload()
         XCTAssertTrue(ctrl.settings.providers.first { $0.name == "Gemini" }?.starred ?? false)
     }
+
+    func test_editProvider_duplicateURL_throws() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "A", url: "https://a.example")
+        try ctrl.addProvider(name: "B", url: "https://b.example")
+        let idA = ctrl.settings.providers[0].id
+        XCTAssertThrowsError(try ctrl.editProvider(id: idA, name: "A", url: "https://b.example")) { err in
+            XCTAssertEqual(err as? ProviderError, .duplicateURL)
+        }
+    }
 }
