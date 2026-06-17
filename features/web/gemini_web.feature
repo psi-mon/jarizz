@@ -1,6 +1,6 @@
 # mutation-stamp: sha256=77c8c1b140aa0b4a180d4a1ea2a62dd92cfbd5d1ac833b76cd3f630322c2f9fc
 # acceptance-mutation-manifest-begin
-# {"version":1,"tested_at":"2026-06-17T15:43:29Z","feature_name":"Gemini web provider","feature_path":"features/web/gemini_web.feature","background_hash":"1bbaaa5b74478580377aaf1cdca2c61009fe6d440cd42b6bc24681d801488cf3","implementation_hash":"unknown","scenarios":[]}
+# {"version":1,"tested_at":"2026-06-17T15:58:44Z","feature_name":"Gemini web provider","feature_path":"features/web/gemini_web.feature","background_hash":"1bbaaa5b74478580377aaf1cdca2c61009fe6d440cd42b6bc24681d801488cf3","implementation_hash":"unknown","scenarios":[]}
 # acceptance-mutation-manifest-end
 
 Feature: Gemini web provider
