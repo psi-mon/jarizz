@@ -10,6 +10,13 @@ public struct AcceptanceWorld {
     public var screenWidth: Double = 0
     public var screenHeight: Double = 0
     public var webAdapter: MockWebProviderAdapter?
+    public var settingsStore: InMemorySettingsStore
+    public var settingsCtrl: SettingsController
+    public var lastProviderError: ProviderError?
 
-    public init() {}
+    public init() {
+        let store = InMemorySettingsStore()
+        settingsStore = store
+        settingsCtrl = SettingsController(store: store)
+    }
 }
