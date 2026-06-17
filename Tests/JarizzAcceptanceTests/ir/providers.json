@@ -1,0 +1,487 @@
+{
+  "name": "Settings — Providers",
+  "scenarios": [
+    {
+      "name": "Panel shows a placeholder when no providers are configured",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "no providers are configured"
+        },
+        {
+          "keyword": "When",
+          "text": "the user shows the panel"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel displays \"Add a provider in Settings to get started\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "User adds a web provider",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "When",
+          "text": "the user adds a provider with name \"\u003cname\u003e\" and URL \"\u003curl\u003e\"",
+          "parameters": [
+            "name",
+            "url"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003cname\u003e\" with URL \"\u003curl\u003e\" is in the provider list",
+          "parameters": [
+            "name",
+            "url"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini",
+          "url": "https://gemini.google.com/app"
+        }
+      ]
+    },
+    {
+      "name": "User removes a web provider",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003cname\u003e\" and URL \"\u003curl\u003e\" exists",
+          "parameters": [
+            "name",
+            "url"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user removes the provider \"\u003cname\u003e\"",
+          "parameters": [
+            "name"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003cname\u003e\" is not in the provider list",
+          "parameters": [
+            "name"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini",
+          "url": "https://gemini.google.com/app"
+        }
+      ]
+    },
+    {
+      "name": "User edits a web provider",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003cold_name\u003e\" and URL \"\u003cold_url\u003e\" exists",
+          "parameters": [
+            "old_name",
+            "old_url"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user edits the provider name to \"\u003cnew_name\u003e\" and URL to \"\u003cnew_url\u003e\"",
+          "parameters": [
+            "new_name",
+            "new_url"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003cnew_name\u003e\" with URL \"\u003cnew_url\u003e\" is in the provider list",
+          "parameters": [
+            "new_name",
+            "new_url"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the provider \"\u003cold_name\u003e\" is not in the provider list",
+          "parameters": [
+            "old_name"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "new_name": "New Name",
+          "new_url": "https://new.example",
+          "old_name": "Old Name",
+          "old_url": "https://old.example"
+        }
+      ]
+    },
+    {
+      "name": "User stars a provider as the default",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003cname\u003e\" exists",
+          "parameters": [
+            "name"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user stars the provider \"\u003cname\u003e\"",
+          "parameters": [
+            "name"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003cname\u003e\" is starred",
+          "parameters": [
+            "name"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini"
+        }
+      ]
+    },
+    {
+      "name": "Starring a provider removes the star from the previous default",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003cfirst\u003e\" is starred",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003csecond\u003e\" exists",
+          "parameters": [
+            "second"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user stars the provider \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003csecond\u003e\" is starred",
+          "parameters": [
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the provider \"\u003cfirst\u003e\" is not starred",
+          "parameters": [
+            "first"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Panel loads the starred provider on show",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003cname\u003e\" and URL \"\u003curl\u003e\" is starred",
+          "parameters": [
+            "name",
+            "url"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user shows the panel"
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider has navigated to \"\u003curl\u003e\"",
+          "parameters": [
+            "url"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini",
+          "url": "https://gemini.google.com/app"
+        }
+      ]
+    },
+    {
+      "name": "Panel loads the first provider when none is starred",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "no provider is starred"
+        },
+        {
+          "keyword": "And",
+          "text": "the first provider in the list has URL \"\u003curl\u003e\"",
+          "parameters": [
+            "url"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user shows the panel"
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider has navigated to \"\u003curl\u003e\"",
+          "parameters": [
+            "url"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "url": "https://gemini.google.com/app"
+        }
+      ]
+    },
+    {
+      "name": "Provider with an invalid URL is rejected",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "When",
+          "text": "the user tries to add a provider with name \"Test\" and URL \"\u003curl\u003e\"",
+          "parameters": [
+            "url"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider is not added"
+        },
+        {
+          "keyword": "And",
+          "text": "the error \"Invalid URL\" is shown"
+        }
+      ],
+      "examples": [
+        {
+          "url": "not-a-url"
+        },
+        {
+          "url": "http://"
+        }
+      ]
+    },
+    {
+      "name": "Provider with a duplicate URL is rejected",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with URL \"\u003curl\u003e\" already exists",
+          "parameters": [
+            "url"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user tries to add a provider with name \"Duplicate\" and URL \"\u003curl\u003e\"",
+          "parameters": [
+            "url"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider is not added"
+        },
+        {
+          "keyword": "And",
+          "text": "the error \"URL already in use\" is shown"
+        }
+      ],
+      "examples": [
+        {
+          "url": "https://gemini.google.com/app"
+        }
+      ]
+    },
+    {
+      "name": "Provider with an empty name is rejected",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "When",
+          "text": "the user tries to add a provider with name \"\" and URL \"https://gemini.google.com/app\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider is not added"
+        },
+        {
+          "keyword": "And",
+          "text": "the error \"Name is required\" is shown"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Configured providers persist after app restart",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "a provider with name \"\u003cname\u003e\" and URL \"\u003curl\u003e\" has been added",
+          "parameters": [
+            "name",
+            "url"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the app is restarted"
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003cname\u003e\" with URL \"\u003curl\u003e\" is in the provider list",
+          "parameters": [
+            "name",
+            "url"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini",
+          "url": "https://gemini.google.com/app"
+        }
+      ]
+    },
+    {
+      "name": "Starred provider persists after app restart",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the provider \"\u003cname\u003e\" is starred",
+          "parameters": [
+            "name"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the app is restarted"
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider \"\u003cname\u003e\" is starred",
+          "parameters": [
+            "name"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini"
+        }
+      ]
+    }
+  ]
+}
