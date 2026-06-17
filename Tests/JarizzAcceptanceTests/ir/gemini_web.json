@@ -214,6 +214,38 @@
         }
       ],
       "examples": []
+    },
+    {
+      "name": "Gemini input field is focused when the panel becomes visible",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "Gemini is loaded and the input field is present"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the Gemini input field has focus"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Web provider focuses the input field when the panel is shown",
+      "steps": [
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider focuses the input field on show"
+        }
+      ],
+      "examples": []
     }
   ]
 }

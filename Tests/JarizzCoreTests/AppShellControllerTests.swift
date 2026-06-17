@@ -99,4 +99,8 @@ final class AppShellControllerTests: XCTestCase {
     func test_mockAdapter_authSessionIsNonEphemeral() {
         XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").authSessionIsNonEphemeral)
     }
+
+    func test_mockAdapter_focusesInputFieldOnShow() {
+        XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").focusesInputFieldOnShow)
+    }
 }

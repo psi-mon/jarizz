@@ -46,6 +46,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.controller.setNetworkUnavailable()
     }),
     // Manual-only stubs
+    ("Given", "Gemini is loaded and the input field is present", { _, _ in }),
     ("Given", "the user is not signed in to Google", { _, _ in }),
     ("Given", "the user is not signed in to Google in the panel", { _, _ in }),
     ("Given", "the user has initiated Google sign-in", { _, _ in }),
@@ -146,6 +147,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Then", "the web provider auth session is not ephemeral", { world, _ in
         XCTAssertTrue(world.webAdapter?.authSessionIsNonEphemeral ?? false)
     }),
+    ("Then", "the web provider focuses the input field on show", { world, _ in
+        XCTAssertTrue(world.webAdapter?.focusesInputFieldOnShow ?? false)
+    }),
     ("Then", #"the panel displays "(.+)""#, { world, text in
         XCTAssertEqual(world.controller.networkErrorMessage, extractQuoted(text))
     }),
@@ -155,6 +159,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("And", "after sign-in completes the user is signed in to Google in the panel", { _, _ in }),
     ("Then", "the session can use an existing signed-in Google account from the system browser", { _, _ in }),
     ("Then", "jarizz presents a system authentication session that supports passkeys", { _, _ in }),
+    ("Then", "the Gemini input field has focus", { _, _ in }),
     ("Then", "the secondary window opens inside the app", { _, _ in }),
     ("And", "the user can complete sign-in without switching to an external browser", { _, _ in }),
 ]
