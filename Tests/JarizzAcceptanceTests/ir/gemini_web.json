@@ -30,7 +30,7 @@
       "examples": []
     },
     {
-      "name": "User can complete Google sign-in via system authentication session",
+      "name": "User can complete Google sign-in via ASWebAuthenticationSession",
       "steps": [
         {
           "keyword": "Given",
@@ -46,7 +46,7 @@
         },
         {
           "keyword": "Then",
-          "text": "jarizz presents a system authentication session for Google sign-in"
+          "text": "jarizz presents an ASWebAuthenticationSession for Google sign-in"
         },
         {
           "keyword": "And",
@@ -56,7 +56,7 @@
       "examples": []
     },
     {
-      "name": "System authentication session can reuse an existing Google account",
+      "name": "ASWebAuthenticationSession reuses an existing Google account from Safari",
       "steps": [
         {
           "keyword": "Given",
@@ -67,12 +67,16 @@
           "text": "the user is not signed in to Google in the panel"
         },
         {
+          "keyword": "And",
+          "text": "the user is signed in to Google in Safari"
+        },
+        {
           "keyword": "When",
-          "text": "jarizz presents a system authentication session"
+          "text": "jarizz presents an ASWebAuthenticationSession"
         },
         {
           "keyword": "Then",
-          "text": "the session can use an existing signed-in Google account from the system browser"
+          "text": "the session completes without re-entering credentials"
         },
         {
           "keyword": "And",
@@ -176,7 +180,7 @@
       "examples": []
     },
     {
-      "name": "Passkey sign-in works through system authentication session",
+      "name": "Passkey sign-in works through ASWebAuthenticationSession",
       "steps": [
         {
           "keyword": "Given",
@@ -192,25 +196,11 @@
         },
         {
           "keyword": "Then",
-          "text": "jarizz presents a system authentication session that supports passkeys"
+          "text": "jarizz presents an ASWebAuthenticationSession that supports passkeys"
         },
         {
           "keyword": "And",
           "text": "after sign-in completes the user is signed in to Google in the panel"
-        }
-      ],
-      "examples": []
-    },
-    {
-      "name": "Web provider system auth session is non-ephemeral",
-      "steps": [
-        {
-          "keyword": "When",
-          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
-        },
-        {
-          "keyword": "Then",
-          "text": "the web provider auth session is not ephemeral"
         }
       ],
       "examples": []
@@ -243,6 +233,50 @@
         {
           "keyword": "Then",
           "text": "the web provider focuses the input field on show"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Web provider triggers an ASWebAuthenticationSession when sign-in is initiated",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "When",
+          "text": "the user initiates Google sign-in"
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider auth session trigger count is \"1\""
+        },
+        {
+          "keyword": "And",
+          "text": "the web provider auth session is not ephemeral"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Auth result is bridged into the web view after the session completes",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is visible"
+        },
+        {
+          "keyword": "And",
+          "text": "the user has initiated Google sign-in"
+        },
+        {
+          "keyword": "When",
+          "text": "the auth session completes with callback URL \"com.jarizz.auth://callback\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider has bridged the auth result to the web view"
         }
       ],
       "examples": []
