@@ -10,6 +10,8 @@ final class GeminiWebView: NSObject, WebProviderAdapter {
     let handlesNewWindowsInApp: Bool = true
     let authSessionIsNonEphemeral: Bool = true
     let focusesInputFieldOnShow: Bool = true
+    private(set) var authSessionTriggerCount: Int = 0
+    private(set) var hasBridgedAuthResult: Bool = false
 
     init(url: String) {
         self.url = url
@@ -24,6 +26,14 @@ final class GeminiWebView: NSObject, WebProviderAdapter {
         guard let target = URL(string: url) else { return }
         webView.load(URLRequest(url: target))
         navigationCount += 1
+    }
+
+    func startAuthSession(for url: String, callbackScheme: String) {
+        authSessionTriggerCount += 1
+    }
+
+    func handleAuthCallback(url: String) {
+        hasBridgedAuthResult = true
     }
 }
 
