@@ -23,6 +23,7 @@ let package = Package(
                 .linkedFramework("Carbon"),
                 .linkedFramework("SwiftUI"),
                 .linkedFramework("WebKit"),
+                .linkedFramework("AuthenticationServices"),
             ]
         ),
         .target(
