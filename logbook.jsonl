@@ -289,3 +289,4 @@ Specifier handoff name: settings-001
 Branch: swarmforge-architect
 Commit: e4c78e6e8b
 Job complete.","note":"received handoff handoff-20260617-180733-architect-specifier-000018-eff64f"}
+{"timestamp":"2026-06-18T14:18:00+0200","direction":"sent","message":"message type: handoff\nmessage id: handoff-20260618-141759-specifier-coder-000011-502b6f\nsender role: specifier\ntarget role: coder\nmessage sequence: 000011\n\nRe-read your role and constitution.\n\nSpecifier handoff name: web-001\nBranch: main\nCommit: 857da1f2d0\n\nApply your own role rules to this state.","note":"handoff handoff-20260618-141759-specifier-coder-000011-502b6f sent to coder"}
