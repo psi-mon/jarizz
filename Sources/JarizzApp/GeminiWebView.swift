@@ -53,9 +53,25 @@ final class GeminiWebView: NSObject, WebProviderAdapter {
 
     func handleAuthCallback(url: String) {
         hasBridgedAuthResult = true
-        // Re-navigate to the provider URL so the web view picks up the authenticated session.
-        guard let target = URL(string: self.url) else { return }
-        webView.load(URLRequest(url: target))
+        copyGoogleCookiesToWebView { [weak self] in
+            guard let self, let target = URL(string: self.url) else { return }
+            self.webView.load(URLRequest(url: target))
+        }
+    }
+
+    private func copyGoogleCookiesToWebView(then completion: @escaping () -> Void) {
+        let domains = ["google.com", "accounts.google.com", "googleapis.com"]
+        let cookies = HTTPCookieStorage.shared.cookies?.filter { cookie in
+            domains.contains(where: { cookie.domain.hasSuffix($0) })
+        } ?? []
+        guard !cookies.isEmpty else { completion(); return }
+        let store = WKWebsiteDataStore.default().httpCookieStore
+        let group = DispatchGroup()
+        for cookie in cookies {
+            group.enter()
+            store.setCookie(cookie) { group.leave() }
+        }
+        group.notify(queue: .main, execute: completion)
     }
 }
 
