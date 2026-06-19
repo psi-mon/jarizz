@@ -164,16 +164,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         } catch {}
     }),
     // Manual-only action stubs
-    ("When", "the user completes Google sign-in inside the panel", { _, _ in }),
-    ("When", "Google authentication requires a secondary window", { _, _ in }),
-    ("When", "the user initiates Google sign-in", { world, _ in
-        world.webAdapter?.startAuthSession(for: "https://accounts.google.com", callbackScheme: "com.jarizz.auth")
-    }),
-    ("When", #"the auth session completes with callback URL "(.+)""#, { world, text in
-        world.webAdapter?.handleAuthCallback(url: extractQuoted(text))
-    }),
-    ("When", "jarizz presents an ASWebAuthenticationSession", { _, _ in }),
-    ("When", "the user initiates passkey sign-in", { _, _ in }),
+    ("When", "the user enters their Google credentials in the sign-in form", { _, _ in }),
     ("When", "the user quits the app", { _, _ in }),
     ("When", "the user launches the app", { _, _ in }),
     ("When", #"the user right-clicks the menubar icon"#, { _, _ in }),
@@ -256,15 +247,6 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Then", "the web provider handles new windows inside the app", { world, _ in
         XCTAssertTrue(world.webAdapter?.handlesNewWindowsInApp ?? false)
     }),
-    ("Then", "the web provider auth session is not ephemeral", { world, _ in
-        XCTAssertTrue(world.webAdapter?.authSessionIsNonEphemeral ?? false)
-    }),
-    ("Then", #"the web provider auth session trigger count is "(\d+)""#, { world, text in
-        XCTAssertEqual(world.webAdapter?.authSessionTriggerCount, Int(extractQuoted(text)) ?? -1)
-    }),
-    ("Then", "the web provider has bridged the auth result to the web view", { world, _ in
-        XCTAssertTrue(world.webAdapter?.hasBridgedAuthResult ?? false)
-    }),
     ("Then", "the web provider focuses the input field on show", { world, _ in
         XCTAssertTrue(world.webAdapter?.focusesInputFieldOnShow ?? false)
     }),
@@ -310,16 +292,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     // Manual-only assertion stubs
     ("Then", "the user is signed in to Google inside the panel", { _, _ in }),
-    ("Then", "jarizz presents an ASWebAuthenticationSession for Google sign-in", { _, _ in }),
-    ("Then", "jarizz presents a system authentication session for Google sign-in", { _, _ in }),
-    ("And", "after sign-in completes the user is signed in to Google in the panel", { _, _ in }),
-    ("Then", "the session completes without re-entering credentials", { _, _ in }),
-    ("Then", "the session can use an existing signed-in Google account from the system browser", { _, _ in }),
-    ("Then", "jarizz presents an ASWebAuthenticationSession that supports passkeys", { _, _ in }),
-    ("Then", "jarizz presents a system authentication session that supports passkeys", { _, _ in }),
     ("Then", "the Gemini input field has focus", { _, _ in }),
-    ("Then", "the secondary window opens inside the app", { _, _ in }),
-    ("And", "the user can complete sign-in without switching to an external browser", { _, _ in }),
     ("Then", "a context menu appears containing \"Settings…\"", { _, _ in }),
     ("And", "the context menu contains \"Quit jarizz\"", { _, _ in }),
     ("Then", "the Settings window is visible", { _, _ in }),

@@ -116,7 +116,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             if webView?.url != provider.url {
                 shell = AppShellController()
                 let adapter = GeminiWebView(url: provider.url)
-                adapter.presentationAnchor = p
                 shell.configure(adapter: adapter)
                 webView = adapter
                 p.contentView = adapter.webView

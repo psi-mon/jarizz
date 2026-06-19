@@ -96,32 +96,8 @@ final class AppShellControllerTests: XCTestCase {
         XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").handlesNewWindowsInApp)
     }
 
-    func test_mockAdapter_authSessionIsNonEphemeral() {
-        XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").authSessionIsNonEphemeral)
-    }
-
     func test_mockAdapter_focusesInputFieldOnShow() {
         XCTAssertTrue(MockWebProviderAdapter(url: "https://example.com").focusesInputFieldOnShow)
-    }
-
-    func test_mockAdapter_authSessionTriggerCount_startsAtZero() {
-        XCTAssertEqual(MockWebProviderAdapter(url: "https://example.com").authSessionTriggerCount, 0)
-    }
-
-    func test_mockAdapter_startAuthSession_incrementsTriggerCount() {
-        let adapter = MockWebProviderAdapter(url: "https://example.com")
-        adapter.startAuthSession(for: "https://accounts.google.com", callbackScheme: "com.jarizz.auth")
-        XCTAssertEqual(adapter.authSessionTriggerCount, 1)
-    }
-
-    func test_mockAdapter_hasBridgedAuthResult_falseByDefault() {
-        XCTAssertFalse(MockWebProviderAdapter(url: "https://example.com").hasBridgedAuthResult)
-    }
-
-    func test_mockAdapter_handleAuthCallback_setsBridgedFlag() {
-        let adapter = MockWebProviderAdapter(url: "https://example.com")
-        adapter.handleAuthCallback(url: "com.jarizz.auth://callback")
-        XCTAssertTrue(adapter.hasBridgedAuthResult)
     }
 
     func test_openSettings_dismissesPanel() {
