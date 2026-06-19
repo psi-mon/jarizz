@@ -87,6 +87,20 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         try? world.settingsCtrl.addProvider(name: name, url: "https://\(name.lowercased()).example.com")
         world.settingsCtrl.starProvider(named: name)
     }),
+    ("Given", #"providers "(.+)" and "(.+)" are configured in that order"#, { world, text in
+        let parts = extractAllQuoted(text)
+        let first = parts[safe: 0] ?? "Provider1"
+        let second = parts[safe: 1] ?? "Provider2"
+        try? world.settingsCtrl.addProvider(name: first, url: "https://\(first.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: second, url: "https://\(second.lowercased()).example.com")
+    }),
+    ("Given", #"only provider "(.+)" is configured"#, { world, text in
+        let name = extractQuoted(text)
+        world.settingsCtrl = SettingsController(store: InMemorySettingsStore())
+        try? world.settingsCtrl.addProvider(name: name, url: "https://\(name.lowercased()).example.com")
+    }),
+    // Manual-only cycle stub
+    ("Given", #"providers "(.+)" and "(.+)" are loaded and signed in"#, { _, _ in }),
     ("Given", "no provider is starred", { _, _ in }),
     ("Given", #"the first provider in the list has URL "(.+)""#, { world, text in
         try? world.settingsCtrl.addProvider(name: "First", url: extractQuoted(text))
@@ -128,6 +142,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("When", "the app is restarted", { world, _ in
         world.settingsCtrl.reload()
         world.controller = AppShellController()
+    }),
+    ("When", "the user presses Ctrl\\+Tab", { world, _ in
+        world.settingsCtrl.cycleProvider()
     }),
     ("When", "the user shows the panel", { world, _ in
         if let provider = world.settingsCtrl.activeProvider {
@@ -255,6 +272,13 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         let msg = world.controller.networkErrorMessage ?? world.settingsCtrl.panelContentMessage
         XCTAssertEqual(msg, expected)
     }),
+
+    // Provider cycle assertions
+    ("Then", #"the active provider is "(.+)""#, { world, text in
+        XCTAssertEqual(world.settingsCtrl.currentProvider?.name, extractQuoted(text))
+    }),
+    // Manual-only cycle assertion stub
+    ("Then", #"the "(.+)" provider is in the same session state as before cycling"#, { _, _ in }),
 
     // Settings assertions
     ("Then", #"the global hotkey is "(.+)""#, { world, text in
