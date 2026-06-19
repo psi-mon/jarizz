@@ -54,12 +54,29 @@ public struct SettingsController {
         settings.providers.first(where: { $0.starred }) ?? settings.providers.first
     }
 
+    public private(set) var currentProviderIndex: Int = 0
+
+    public var currentProvider: Provider? {
+        settings.providers[safe: currentProviderIndex]
+    }
+
+    public mutating func cycleProvider() {
+        guard settings.providers.count > 1 else { return }
+        currentProviderIndex = (currentProviderIndex + 1) % settings.providers.count
+    }
+
     public var panelContentMessage: String? {
         settings.providers.isEmpty ? "Add a provider in Settings to get started" : nil
     }
 
     public mutating func reload() {
         settings = store.load()
+    }
+}
+
+private extension Array {
+    subscript(safe index: Int) -> Element? {
+        indices.contains(index) ? self[index] : nil
     }
 }
 
