@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: Tests/JarizzAcceptanceTests/ir/gemini_web.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/gemini_web.json
 final class GeminiWebProviderAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/gemini_web.json"
 
@@ -17,7 +17,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider has navigated to \"https://gemini.google.com/app\"")
     }
 
-    // Scenario: User can sign in to Google directly in the panel (manual-only)
+    // Scenario: User can sign in to Google directly in the panel
     func test_UserCanSignInToGoogleDirectlyInThePanel_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 0)
@@ -43,7 +43,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider navigation count is \"1\"")
     }
 
-    // Scenario: Google session persists after the app is restarted (manual-only)
+    // Scenario: Google session persists after the app is restarted
     func test_GoogleSessionPersistsAfterTheAppIsRestarted_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
@@ -91,7 +91,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider handles new windows inside the app")
     }
 
-    // Scenario: Gemini input field is focused when the panel becomes visible (manual-only)
+    // Scenario: Gemini input field is focused when the panel becomes visible
     func test_GeminiInputFieldIsFocusedWhenThePanelBecomesVisible_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 7, exampleIndex: 0)
