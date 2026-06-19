@@ -17,8 +17,8 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider has navigated to \"https://gemini.google.com/app\"")
     }
 
-    // Scenario: User can complete Google sign-in via ASWebAuthenticationSession
-    func test_UserCanCompleteGoogleSignInViaASWebAuthenticationSession_example1() {
+    // Scenario: User can sign in to Google directly in the panel
+    func test_UserCanSignInToGoogleDirectlyInThePanel_example1() {
         var world = AcceptanceWorld()
         let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 1, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
@@ -26,30 +26,14 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the user is not signed in to Google")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user initiates Google sign-in")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "jarizz presents an ASWebAuthenticationSession for Google sign-in")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "after sign-in completes the user is signed in to Google in the panel")
-    }
-
-    // Scenario: ASWebAuthenticationSession reuses an existing Google account from Safari
-    func test_ASWebAuthenticationSessionReusesAnExistingGoogleAccountFromSafari_example1() {
-        var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 2, exampleIndex: 0)
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the user is not signed in to Google in the panel")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the user is signed in to Google in Safari")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "jarizz presents an ASWebAuthenticationSession")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the session completes without re-entering credentials")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "after sign-in completes the user is signed in to Google in the panel")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user enters their Google credentials in the sign-in form")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the user is signed in to Google inside the panel")
     }
 
     // Scenario: Hiding and showing the panel does not reload the web provider
     func test_HidingAndShowingThePanelDoesNotReloadTheWebProvider_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 2, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
@@ -62,7 +46,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
     // Scenario: Google session persists after the app is restarted
     func test_GoogleSessionPersistsAfterTheAppIsRestarted_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
@@ -76,7 +60,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
     // Scenario: Panel shows an error message when the network is unavailable
     func test_PanelShowsAnErrorMessageWhenTheNetworkIsUnavailable_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
@@ -88,7 +72,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
     // Scenario: Web provider uses persistent session storage
     func test_WebProviderUsesPersistentSessionStorage_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 6, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
@@ -99,7 +83,7 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
     // Scenario: Web provider handles new windows inside the app
     func test_WebProviderHandlesNewWindowsInsideTheApp_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 7, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 6, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
@@ -107,24 +91,10 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider handles new windows inside the app")
     }
 
-    // Scenario: Passkey sign-in works through ASWebAuthenticationSession
-    func test_PasskeySignInWorksThroughASWebAuthenticationSession_example1() {
-        var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 8, exampleIndex: 0)
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the user is not signed in to Google")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user initiates passkey sign-in")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "jarizz presents an ASWebAuthenticationSession that supports passkeys")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "after sign-in completes the user is signed in to Google in the panel")
-    }
-
     // Scenario: Gemini input field is focused when the panel becomes visible
     func test_GeminiInputFieldIsFocusedWhenThePanelBecomesVisible_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 9, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 7, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
@@ -136,37 +106,11 @@ final class GeminiWebProviderAcceptanceTests: XCTestCase {
     // Scenario: Web provider focuses the input field when the panel is shown
     func test_WebProviderFocusesTheInputFieldWhenThePanelIsShown_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 10, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 8, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider focuses the input field on show")
-    }
-
-    // Scenario: Web provider triggers an ASWebAuthenticationSession when sign-in is initiated
-    func test_WebProviderTriggersAnASWebAuthenticationSessionWhenSignInIsInitiated_example1() {
-        var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 11, exampleIndex: 0)
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user initiates Google sign-in")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider auth session trigger count is \"1\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the web provider auth session is not ephemeral")
-    }
-
-    // Scenario: Auth result is bridged into the web view after the session completes
-    func test_AuthResultIsBridgedIntoTheWebViewAfterTheSessionCompletes_example1() {
-        var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 12, exampleIndex: 0)
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "a web provider is configured with URL \"https://gemini.google.com/app\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the panel is visible")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the user has initiated Google sign-in")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the auth session completes with callback URL \"com.jarizz.auth://callback\"")
-        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider has bridged the auth result to the web view")
     }
 }
