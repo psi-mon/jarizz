@@ -78,5 +78,4 @@ final class AppShellControllerPropertyTests: XCTestCase {
             return adapter.navigationCount == 1
         }
     }
-
 }
