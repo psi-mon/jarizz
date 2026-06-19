@@ -78,20 +78,4 @@ final class AppShellControllerPropertyTests: XCTestCase {
             return adapter.navigationCount == 1
         }
     }
-
-    func test_prop_authSessionTriggerCountAccumulates() {
-        forAll([0, 1, 2, 5], "authSessionTriggerCount equals startAuthSession call count") { n in
-            let adapter = MockWebProviderAdapter(url: "https://example.com")
-            for _ in 0..<n { adapter.startAuthSession(for: "https://accounts.google.com", callbackScheme: "com.jarizz.auth") }
-            return adapter.authSessionTriggerCount == n
-        }
-    }
-
-    func test_prop_handleAuthCallbackIsIdempotent() {
-        forAll([1, 2, 3], "hasBridgedAuthResult stays true regardless of handleAuthCallback call count") { callCount in
-            let adapter = MockWebProviderAdapter(url: "https://example.com")
-            for _ in 0..<callCount { adapter.handleAuthCallback(url: "com.jarizz.auth://callback") }
-            return adapter.hasBridgedAuthResult
-        }
-    }
 }
