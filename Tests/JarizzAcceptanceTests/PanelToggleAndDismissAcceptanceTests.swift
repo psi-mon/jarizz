@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/Tests/JarizzAcceptanceTests/ir/popover.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/popover.json
 final class PanelToggleAndDismissAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/popover.json"
 

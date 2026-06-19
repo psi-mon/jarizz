@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/Tests/JarizzAcceptanceTests/ir/menubar.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/menubar.json
 final class MenubarIconAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/menubar.json"
 
