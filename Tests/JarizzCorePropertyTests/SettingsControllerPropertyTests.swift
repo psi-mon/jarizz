@@ -25,4 +25,24 @@ final class SettingsControllerPropertyTests: XCTestCase {
             XCTAssertEqual(starCount, 1, "Expected exactly 1 starred provider after starring \(starName)")
         }
     }
+
+    func test_prop_cycleProviderWrapsAround() throws {
+        forAll([2, 3, 5], "cycling N times through N providers returns to index 0") { count in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            for i in 0..<count {
+                try? ctrl.addProvider(name: "P\(i)", url: "https://p\(i).example.com")
+            }
+            for _ in 0..<count { ctrl.cycleProvider() }
+            return ctrl.currentProviderIndex == 0
+        }
+    }
+
+    func test_prop_cycleProviderNoOpForSingleProvider() throws {
+        forAll([1, 2, 5], "cycleProvider never changes index when only 1 provider configured") { cycleCount in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            try? ctrl.addProvider(name: "Only", url: "https://only.example.com")
+            for _ in 0..<cycleCount { ctrl.cycleProvider() }
+            return ctrl.currentProviderIndex == 0
+        }
+    }
 }

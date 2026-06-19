@@ -174,6 +174,40 @@ final class SettingsControllerTests: XCTestCase {
         XCTAssertTrue(ctrl.settings.providers.contains { $0.name == "Gemini" })
     }
 
+    // MARK: - Provider cycling
+
+    func test_currentProviderIndex_startsAtZero() {
+        XCTAssertEqual(SettingsController(store: InMemorySettingsStore()).currentProviderIndex, 0)
+    }
+
+    func test_cycleProvider_advancesToNext() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "ChatGPT")
+    }
+
+    func test_cycleProvider_wrapsFromLast() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        ctrl.cycleProvider()
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "Gemini")
+    }
+
+    func test_cycleProvider_singleProvider_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "Gemini")
+    }
+
+    func test_currentProvider_nilWhenNoProviders() {
+        XCTAssertNil(SettingsController(store: InMemorySettingsStore()).currentProvider)
+    }
+
     func test_starredProvider_persistsAfterRestart() throws {
         let store = InMemorySettingsStore()
         var ctrl = SettingsController(store: store)

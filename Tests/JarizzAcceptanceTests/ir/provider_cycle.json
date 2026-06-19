@@ -1,0 +1,119 @@
+{
+  "name": "Provider cycle",
+  "background": [
+    {
+      "keyword": "Given",
+      "text": "the app is running"
+    },
+    {
+      "keyword": "And",
+      "text": "the panel is visible"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Ctrl+Tab cycles to the next provider in the list",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "Then",
+          "text": "the active provider is \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Cycling wraps from the last provider back to the first",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "And",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "Then",
+          "text": "the active provider is \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Ctrl+Tab with only one provider configured does nothing",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "only provider \"Gemini\" is configured"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "Then",
+          "text": "the active provider is \"Gemini\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Each provider retains its web session when the user switches away and back",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"Gemini\" and \"ChatGPT\" are loaded and signed in"
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "And",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "Then",
+          "text": "the \"Gemini\" provider is in the same session state as before cycling"
+        }
+      ],
+      "examples": []
+    }
+  ]
+}
