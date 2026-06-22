@@ -97,9 +97,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.displayedProviderName = extractQuoted(text)
     }),
     ("Given", #"the panel is showing the web view for provider "(.+)""#, { world, text in
-        let name = extractQuoted(text)
-        let adapter = MockWebProviderAdapter(url: syntheticURL(name))
-        adapter.navigate(to: syntheticURL(name))
+        let url = syntheticURL(extractQuoted(text))
+        let adapter = MockWebProviderAdapter(url: url)
+        adapter.navigate(to: url)
         world.webAdapter = adapter
     }),
     ("Given", #"only provider "(.+)" is configured"#, { world, text in
@@ -153,8 +153,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", "the user presses Ctrl\\+Tab", { world, _ in
         world.settingsCtrl.cycleProvider()
-        world.displayedProviderName = world.settingsCtrl.currentProvider?.name
-        if let url = world.settingsCtrl.currentProvider?.url {
+        let provider = world.settingsCtrl.currentProvider
+        world.displayedProviderName = provider?.name
+        if let url = provider?.url {
             world.webAdapter?.navigate(to: url)
         }
     }),
