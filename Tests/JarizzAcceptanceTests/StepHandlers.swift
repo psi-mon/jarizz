@@ -96,6 +96,12 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Given", #"the panel shows the web view for provider "(.+)""#, { world, text in
         world.displayedProviderName = extractQuoted(text)
     }),
+    ("Given", #"the panel is showing the web view for provider "(.+)""#, { world, text in
+        let name = extractQuoted(text)
+        let adapter = MockWebProviderAdapter(url: syntheticURL(name))
+        adapter.navigate(to: syntheticURL(name))
+        world.webAdapter = adapter
+    }),
     ("Given", #"only provider "(.+)" is configured"#, { world, text in
         let name = extractQuoted(text)
         world.settingsCtrl = SettingsController(store: InMemorySettingsStore())
@@ -148,6 +154,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("When", "the user presses Ctrl\\+Tab", { world, _ in
         world.settingsCtrl.cycleProvider()
         world.displayedProviderName = world.settingsCtrl.currentProvider?.name
+        if let url = world.settingsCtrl.currentProvider?.url {
+            world.webAdapter?.navigate(to: url)
+        }
     }),
     ("When", "the user shows the panel", { world, _ in
         if let provider = world.settingsCtrl.activeProvider {
@@ -282,6 +291,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("Then", #"the panel shows the web view for provider "(.+)""#, { world, text in
         XCTAssertEqual(world.displayedProviderName, extractQuoted(text))
+    }),
+    ("Then", #"the web provider has navigated to the URL of provider "(.+)""#, { world, text in
+        XCTAssertEqual(world.webAdapter?.lastNavigatedURL, syntheticURL(extractQuoted(text)))
     }),
     // Manual-only cycle assertion stub
     ("Then", #"the "(.+)" provider is in the same session state as before cycling"#, { _, _ in }),
