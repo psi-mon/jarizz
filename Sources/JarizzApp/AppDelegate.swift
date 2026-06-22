@@ -11,6 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store = JSONSettingsStore()
     private lazy var settingsViewModel = SettingsViewModel(store: store)
     private var settingsWindowController: NSWindowController?
+    private var currentProviderIndex: Int = 0
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
@@ -115,19 +116,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func cycleToNextProvider() {
-        settingsViewModel.controller.cycleProvider()
-        guard let p = panel,
-              let provider = settingsViewModel.controller.currentProvider else { return }
+        let providers = settingsViewModel.controller.settings.providers
+        guard providers.count > 1 else { return }
+        currentProviderIndex = (currentProviderIndex + 1) % providers.count
+        let provider = providers[currentProviderIndex]
+        guard let p = panel else { return }
         let adapter = GeminiWebView(url: provider.url)
         shell = AppShellController()
         shell.configure(adapter: adapter)
         webView = adapter
         p.contentView = adapter.webView
+        adapter.navigate(to: provider.url)
     }
 
     private func updatePanelContent() {
         guard let p = panel else { return }
         if let provider = settingsViewModel.controller.activeProvider {
+            let providers = settingsViewModel.controller.settings.providers
+            currentProviderIndex = providers.firstIndex(where: { $0.url == provider.url }) ?? 0
             if webView?.url != provider.url {
                 shell = AppShellController()
                 let adapter = GeminiWebView(url: provider.url)
@@ -136,6 +142,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 p.contentView = adapter.webView
             }
         } else {
+            currentProviderIndex = 0
             shell = AppShellController()
             webView = nil
             p.contentView = NSHostingView(rootView: NoProviderView())
@@ -151,6 +158,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func showPanel() {
         guard let p = panel else { return }
+        updatePanelContent()
         let screen = screenForMouse()
         let sizePercent = settingsViewModel.controller.settings.panelSizePercent
         let factor = CGFloat(sizePercent) / 100.0
