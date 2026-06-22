@@ -67,6 +67,17 @@ Feature: Provider cycle
       | p1     | p2      | p3      |
       | Gemini | ChatGPT | Copilot |
 
+  # cycle-007
+  # manual-only: requires live app; verifies AppDelegate registers a local Ctrl+Tab key monitor
+  # that calls cycleProvider() and replaces the panel content with the next provider's web view.
+  # The simulation scenarios (cycle-005, cycle-006) model the JarizzCore behaviour only;
+  # this scenario is the acceptance gate for the AppDelegate adapter layer.
+  Scenario: Ctrl+Tab in the running app cycles the visible provider
+    Given the app is running with providers "Gemini" and "ChatGPT" configured
+    And the panel is visible showing "Gemini"
+    When the user presses Ctrl+Tab on the keyboard
+    Then the panel is displaying "ChatGPT"
+
   # cycle-004
   # manual-only: requires live panel with multiple loaded web views
   # Keep-alive: switching away from a provider and back must not reload its
