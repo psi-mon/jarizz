@@ -64,7 +64,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("Given", #"a provider with name "(.+)" exists"#, { world, text in
         let name = extractQuoted(text)
-        try? world.settingsCtrl.addProvider(name: name, url: "https://\(name.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
     }),
     ("Given", #"a provider with name "(.+)" and URL "(.+)" is starred"#, { world, text in
         let parts = extractAllQuoted(text)
@@ -75,7 +75,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("Given", #"a provider with name "(.+)" is starred"#, { world, text in
         let name = extractQuoted(text)
-        try? world.settingsCtrl.addProvider(name: name, url: "https://\(name.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
         world.settingsCtrl.starProvider(named: name)
     }),
     ("Given", #"a provider with name "(.+)" and URL "(.+)" has been added"#, { world, text in
@@ -84,24 +84,14 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("Given", #"the provider "(.+)" is starred"#, { world, text in
         let name = extractQuoted(text)
-        try? world.settingsCtrl.addProvider(name: name, url: "https://\(name.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
         world.settingsCtrl.starProvider(named: name)
     }),
     ("Given", #"providers "(.+)" and "(.+)" are configured in that order"#, { world, text in
-        let parts = extractAllQuoted(text)
-        let first = parts[safe: 0] ?? "Provider1"
-        let second = parts[safe: 1] ?? "Provider2"
-        try? world.settingsCtrl.addProvider(name: first, url: "https://\(first.lowercased()).example.com")
-        try? world.settingsCtrl.addProvider(name: second, url: "https://\(second.lowercased()).example.com")
+        addNamedProviders(extractAllQuoted(text), defaults: ["Provider1", "Provider2"], to: &world)
     }),
     ("Given", #"providers "(.+)", "(.+)", and "(.+)" are configured in that order"#, { world, text in
-        let parts = extractAllQuoted(text)
-        let p1 = parts[safe: 0] ?? "Provider1"
-        let p2 = parts[safe: 1] ?? "Provider2"
-        let p3 = parts[safe: 2] ?? "Provider3"
-        try? world.settingsCtrl.addProvider(name: p1, url: "https://\(p1.lowercased()).example.com")
-        try? world.settingsCtrl.addProvider(name: p2, url: "https://\(p2.lowercased()).example.com")
-        try? world.settingsCtrl.addProvider(name: p3, url: "https://\(p3.lowercased()).example.com")
+        addNamedProviders(extractAllQuoted(text), defaults: ["Provider1", "Provider2", "Provider3"], to: &world)
     }),
     ("Given", #"the panel shows the web view for provider "(.+)""#, { world, text in
         world.displayedProviderName = extractQuoted(text)
@@ -109,7 +99,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Given", #"only provider "(.+)" is configured"#, { world, text in
         let name = extractQuoted(text)
         world.settingsCtrl = SettingsController(store: InMemorySettingsStore())
-        try? world.settingsCtrl.addProvider(name: name, url: "https://\(name.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
     }),
     // Manual-only cycle stub
     ("Given", #"providers "(.+)" and "(.+)" are loaded and signed in"#, { _, _ in }),
@@ -351,6 +341,17 @@ private func assertPanelHeight(_ world: inout AcceptanceWorld, _ text: String) {
 
 private func screenRect(_ world: AcceptanceWorld) -> CGRect {
     CGRect(x: world.screenOriginX, y: world.screenOriginY, width: world.screenWidth, height: world.screenHeight)
+}
+
+private func syntheticURL(_ name: String) -> String {
+    "https://\(name.lowercased()).example.com"
+}
+
+private func addNamedProviders(_ parts: [String], defaults: [String], to world: inout AcceptanceWorld) {
+    for (i, fallback) in defaults.enumerated() {
+        let name = parts[safe: i] ?? fallback
+        try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
+    }
 }
 
 private func extractQuoted(_ text: String) -> String {
