@@ -123,6 +123,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return adapter
     }
 
+    private func wireAdapter(_ adapter: GeminiWebView, to p: NSPanel) {
+        shell.configure(adapter: adapter)
+        webView = adapter
+        p.contentView = adapter.webView
+    }
+
     private func cycleToNextProvider() {
         let providers = settingsViewModel.controller.settings.providers
         guard providers.count > 1 else { return }
@@ -130,9 +136,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let provider = providers[currentProviderIndex]
         guard let p = panel else { return }
         let adapter = cachedAdapter(for: provider.url)
-        shell.configure(adapter: adapter)
-        webView = adapter
-        p.contentView = adapter.webView
+        wireAdapter(adapter, to: p)
         if adapter.navigationCount == 0 {
             adapter.navigate(to: provider.url)
         }
@@ -146,9 +150,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             let adapter = cachedAdapter(for: provider.url)
             if webView !== adapter {
                 shell = AppShellController()
-                shell.configure(adapter: adapter)
-                webView = adapter
-                p.contentView = adapter.webView
+                wireAdapter(adapter, to: p)
             }
         } else {
             currentProviderIndex = 0
