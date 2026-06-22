@@ -106,8 +106,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.dismissPanel()
                 return nil
             }
+            if event.keyCode == 48 && event.modifierFlags.contains(.control) {
+                self?.cycleToNextProvider()
+                return nil
+            }
             return event
         }
+    }
+
+    private func cycleToNextProvider() {
+        settingsViewModel.controller.cycleProvider()
+        guard let p = panel,
+              let provider = settingsViewModel.controller.currentProvider else { return }
+        let adapter = GeminiWebView(url: provider.url)
+        shell = AppShellController()
+        shell.configure(adapter: adapter)
+        webView = adapter
+        p.contentView = adapter.webView
     }
 
     private func updatePanelContent() {
