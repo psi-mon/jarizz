@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/provider_cycle.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/refactorer/Tests/JarizzAcceptanceTests/ir/provider_cycle.json
 final class ProviderCycleAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/provider_cycle.json"
 
@@ -40,10 +40,38 @@ final class ProviderCycleAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the active provider is \"Gemini\"")
     }
 
+    // Scenario: Panel switches to the next provider's web view when Ctrl+Tab is pressed
+    func test_PanelSwitchesToTheNextProviderSWebViewWhenCtrlTabIsPressed_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "providers \"<first>\" and \"<second>\" are configured in that order")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel shows the web view for provider \"<first>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses Ctrl+Tab")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel shows the web view for provider \"<second>\"")
+    }
+
+    // Scenario: Panel cycles through all three providers in order without skipping
+    func test_PanelCyclesThroughAllThreeProvidersInOrderWithoutSkipping_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "providers \"<p1>\", \"<p2>\", and \"<p3>\" are configured in that order")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel shows the web view for provider \"<p1>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses Ctrl+Tab")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel shows the web view for provider \"<p2>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses Ctrl+Tab")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel shows the web view for provider \"<p3>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses Ctrl+Tab")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel shows the web view for provider \"<p1>\"")
+    }
+
     // Scenario: Each provider retains its web session when the user switches away and back
     func test_EachProviderRetainsItsWebSessionWhenTheUserSwitchesAwayAndBack_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 3, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "providers \"Gemini\" and \"ChatGPT\" are loaded and signed in")

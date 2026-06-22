@@ -208,6 +208,19 @@ final class SettingsControllerTests: XCTestCase {
         XCTAssertNil(SettingsController(store: InMemorySettingsStore()).currentProvider)
     }
 
+    func test_cycleProvider_threeProviders_cyclesInSequence() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        try ctrl.addProvider(name: "Copilot", url: "https://copilot.microsoft.com")
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "ChatGPT")
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "Copilot")
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "Gemini")
+    }
+
     func test_starredProvider_persistsAfterRestart() throws {
         let store = InMemorySettingsStore()
         var ctrl = SettingsController(store: store)
