@@ -192,6 +192,28 @@
       ]
     },
     {
+      "name": "Ctrl+Tab in the running app cycles the visible provider",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running with providers \"Gemini\" and \"ChatGPT\" configured"
+        },
+        {
+          "keyword": "And",
+          "text": "the panel is visible showing \"Gemini\""
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses Ctrl+Tab on the keyboard"
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel is displaying \"ChatGPT\""
+        }
+      ],
+      "examples": []
+    },
+    {
       "name": "Each provider retains its web session when the user switches away and back",
       "steps": [
         {

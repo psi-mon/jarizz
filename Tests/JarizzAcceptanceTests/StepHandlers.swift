@@ -107,8 +107,10 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.settingsCtrl = SettingsController(store: InMemorySettingsStore())
         try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
     }),
-    // Manual-only cycle stub
+    // Manual-only cycle stubs
     ("Given", #"providers "(.+)" and "(.+)" are loaded and signed in"#, { _, _ in }),
+    ("Given", #"the app is running with providers "(.+)" and "(.+)" configured"#, { _, _ in }),
+    ("Given", #"the panel is visible showing "(.+)""#, { _, _ in }),
     ("Given", "no provider is starred", { _, _ in }),
     ("Given", #"the first provider in the list has URL "(.+)""#, { world, text in
         try? world.settingsCtrl.addProvider(name: "First", url: extractQuoted(text))
@@ -193,6 +195,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
             world.lastProviderError = err
         } catch {}
     }),
+    ("When", "the user presses Ctrl\\+Tab on the keyboard", { _, _ in }),
     // Manual-only action stubs
     ("When", "the user enters their Google credentials in the sign-in form", { _, _ in }),
     ("When", "the user quits the app", { _, _ in }),
@@ -333,6 +336,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         case nil: XCTFail("Expected a provider error but got none")
         }
     }),
+    ("Then", #"the panel is displaying "(.+)""#, { _, _ in }),
     // Manual-only assertion stubs
     ("Then", "the user is signed in to Google inside the panel", { _, _ in }),
     ("Then", "the Gemini input field has focus", { _, _ in }),
