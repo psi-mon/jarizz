@@ -13,6 +13,7 @@ public struct AcceptanceWorld {
     public var settingsStore: InMemorySettingsStore
     public var settingsCtrl: SettingsController
     public var lastProviderError: ProviderError?
+    public var displayedProviderName: String?
 
     public init() {
         let store = InMemorySettingsStore()

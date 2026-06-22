@@ -94,6 +94,18 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         try? world.settingsCtrl.addProvider(name: first, url: "https://\(first.lowercased()).example.com")
         try? world.settingsCtrl.addProvider(name: second, url: "https://\(second.lowercased()).example.com")
     }),
+    ("Given", #"providers "(.+)", "(.+)", and "(.+)" are configured in that order"#, { world, text in
+        let parts = extractAllQuoted(text)
+        let p1 = parts[safe: 0] ?? "Provider1"
+        let p2 = parts[safe: 1] ?? "Provider2"
+        let p3 = parts[safe: 2] ?? "Provider3"
+        try? world.settingsCtrl.addProvider(name: p1, url: "https://\(p1.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: p2, url: "https://\(p2.lowercased()).example.com")
+        try? world.settingsCtrl.addProvider(name: p3, url: "https://\(p3.lowercased()).example.com")
+    }),
+    ("Given", #"the panel shows the web view for provider "(.+)""#, { world, text in
+        world.displayedProviderName = extractQuoted(text)
+    }),
     ("Given", #"only provider "(.+)" is configured"#, { world, text in
         let name = extractQuoted(text)
         world.settingsCtrl = SettingsController(store: InMemorySettingsStore())
@@ -145,6 +157,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", "the user presses Ctrl\\+Tab", { world, _ in
         world.settingsCtrl.cycleProvider()
+        world.displayedProviderName = world.settingsCtrl.currentProvider?.name
     }),
     ("When", "the user shows the panel", { world, _ in
         if let provider = world.settingsCtrl.activeProvider {
@@ -276,6 +289,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     // Provider cycle assertions
     ("Then", #"the active provider is "(.+)""#, { world, text in
         XCTAssertEqual(world.settingsCtrl.currentProvider?.name, extractQuoted(text))
+    }),
+    ("Then", #"the panel shows the web view for provider "(.+)""#, { world, text in
+        XCTAssertEqual(world.displayedProviderName, extractQuoted(text))
     }),
     // Manual-only cycle assertion stub
     ("Then", #"the "(.+)" provider is in the same session state as before cycling"#, { _, _ in }),
