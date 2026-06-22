@@ -39,6 +39,34 @@ Feature: Provider cycle
     When the user presses Ctrl+Tab
     Then the active provider is "Gemini"
 
+  # cycle-005
+  # simulation-friendly: verifies AppDelegate wires Ctrl+Tab to switch the displayed web view
+  Scenario Outline: Panel switches to the next provider's web view when Ctrl+Tab is pressed
+    Given providers "<first>" and "<second>" are configured in that order
+    And the panel shows the web view for provider "<first>"
+    When the user presses Ctrl+Tab
+    Then the panel shows the web view for provider "<second>"
+
+    Examples:
+      | first  | second  |
+      | Gemini | ChatGPT |
+
+  # cycle-006
+  # simulation-friendly: with three providers, every Ctrl+Tab advances exactly one step in sequence
+  Scenario Outline: Panel cycles through all three providers in order without skipping
+    Given providers "<p1>", "<p2>", and "<p3>" are configured in that order
+    And the panel shows the web view for provider "<p1>"
+    When the user presses Ctrl+Tab
+    Then the panel shows the web view for provider "<p2>"
+    When the user presses Ctrl+Tab
+    Then the panel shows the web view for provider "<p3>"
+    When the user presses Ctrl+Tab
+    Then the panel shows the web view for provider "<p1>"
+
+    Examples:
+      | p1     | p2      | p3      |
+      | Gemini | ChatGPT | Copilot |
+
   # cycle-004
   # manual-only: requires live panel with multiple loaded web views
   # Keep-alive: switching away from a provider and back must not reload its
