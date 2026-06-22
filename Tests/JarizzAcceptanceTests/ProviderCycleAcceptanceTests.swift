@@ -68,10 +68,22 @@ final class ProviderCycleAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the web provider has navigated to the URL of provider \"<p1>\"")
     }
 
+    // Scenario: Ctrl+Tab in the running app cycles the visible provider
+    func test_CtrlTabInTheRunningAppCyclesTheVisibleProvider_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running with providers \"Gemini\" and \"ChatGPT\" configured")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible showing \"Gemini\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses Ctrl+Tab on the keyboard")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel is displaying \"ChatGPT\"")
+    }
+
     // Scenario: Each provider retains its web session when the user switches away and back
     func test_EachProviderRetainsItsWebSessionWhenTheUserSwitchesAwayAndBack_example1() {
         var world = AcceptanceWorld()
-        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 5, exampleIndex: 0)
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 6, exampleIndex: 0)
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is visible")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "providers \"Gemini\" and \"ChatGPT\" are loaded and signed in")
