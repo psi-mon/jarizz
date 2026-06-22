@@ -94,7 +94,7 @@
       "examples": []
     },
     {
-      "name": "Panel switches to the next provider's web view when Ctrl+Tab is pressed",
+      "name": "Panel navigates to the next provider's URL when Ctrl+Tab is pressed",
       "steps": [
         {
           "keyword": "Given",
@@ -106,7 +106,7 @@
         },
         {
           "keyword": "And",
-          "text": "the panel shows the web view for provider \"\u003cfirst\u003e\"",
+          "text": "the panel is showing the web view for provider \"\u003cfirst\u003e\"",
           "parameters": [
             "first"
           ]
@@ -117,7 +117,7 @@
         },
         {
           "keyword": "Then",
-          "text": "the panel shows the web view for provider \"\u003csecond\u003e\"",
+          "text": "the web provider has navigated to the URL of provider \"\u003csecond\u003e\"",
           "parameters": [
             "second"
           ]
@@ -131,7 +131,7 @@
       ]
     },
     {
-      "name": "Panel cycles through all three providers in order without skipping",
+      "name": "Panel navigates through all three providers' URLs without skipping",
       "steps": [
         {
           "keyword": "Given",
@@ -144,7 +144,7 @@
         },
         {
           "keyword": "And",
-          "text": "the panel shows the web view for provider \"\u003cp1\u003e\"",
+          "text": "the panel is showing the web view for provider \"\u003cp1\u003e\"",
           "parameters": [
             "p1"
           ]
@@ -155,7 +155,7 @@
         },
         {
           "keyword": "Then",
-          "text": "the panel shows the web view for provider \"\u003cp2\u003e\"",
+          "text": "the web provider has navigated to the URL of provider \"\u003cp2\u003e\"",
           "parameters": [
             "p2"
           ]
@@ -166,7 +166,7 @@
         },
         {
           "keyword": "Then",
-          "text": "the panel shows the web view for provider \"\u003cp3\u003e\"",
+          "text": "the web provider has navigated to the URL of provider \"\u003cp3\u003e\"",
           "parameters": [
             "p3"
           ]
@@ -177,7 +177,7 @@
         },
         {
           "keyword": "Then",
-          "text": "the panel shows the web view for provider \"\u003cp1\u003e\"",
+          "text": "the web provider has navigated to the URL of provider \"\u003cp1\u003e\"",
           "parameters": [
             "p1"
           ]
