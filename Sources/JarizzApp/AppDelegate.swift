@@ -11,6 +11,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store = JSONSettingsStore()
     private lazy var settingsViewModel = SettingsViewModel(store: store)
     private var settingsWindowController: NSWindowController?
+    private var currentProviderIndex: Int = 0
+    private var providerWebViews: [String: GeminiWebView] = [:]
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
@@ -106,21 +108,52 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.dismissPanel()
                 return nil
             }
+            if event.keyCode == 48 && event.modifierFlags.contains(.control) {
+                self?.cycleToNextProvider()
+                return nil
+            }
             return event
+        }
+    }
+
+    private func cachedAdapter(for url: String) -> GeminiWebView {
+        if let existing = providerWebViews[url] { return existing }
+        let adapter = GeminiWebView(url: url)
+        providerWebViews[url] = adapter
+        return adapter
+    }
+
+    private func wireAdapter(_ adapter: GeminiWebView, to p: NSPanel) {
+        shell.configure(adapter: adapter)
+        webView = adapter
+        p.contentView = adapter.webView
+    }
+
+    private func cycleToNextProvider() {
+        let providers = settingsViewModel.controller.settings.providers
+        guard providers.count > 1 else { return }
+        currentProviderIndex = (currentProviderIndex + 1) % providers.count
+        let provider = providers[currentProviderIndex]
+        guard let p = panel else { return }
+        let adapter = cachedAdapter(for: provider.url)
+        wireAdapter(adapter, to: p)
+        if adapter.navigationCount == 0 {
+            adapter.navigate(to: provider.url)
         }
     }
 
     private func updatePanelContent() {
         guard let p = panel else { return }
         if let provider = settingsViewModel.controller.activeProvider {
-            if webView?.url != provider.url {
+            let providers = settingsViewModel.controller.settings.providers
+            currentProviderIndex = providers.firstIndex(where: { $0.url == provider.url }) ?? 0
+            let adapter = cachedAdapter(for: provider.url)
+            if webView !== adapter {
                 shell = AppShellController()
-                let adapter = GeminiWebView(url: provider.url)
-                shell.configure(adapter: adapter)
-                webView = adapter
-                p.contentView = adapter.webView
+                wireAdapter(adapter, to: p)
             }
         } else {
+            currentProviderIndex = 0
             shell = AppShellController()
             webView = nil
             p.contentView = NSHostingView(rootView: NoProviderView())
@@ -136,6 +169,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func showPanel() {
         guard let p = panel else { return }
+        updatePanelContent()
         let screen = screenForMouse()
         let sizePercent = settingsViewModel.controller.settings.panelSizePercent
         let factor = CGFloat(sizePercent) / 100.0
