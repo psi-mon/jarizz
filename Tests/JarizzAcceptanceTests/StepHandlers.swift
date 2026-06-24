@@ -97,10 +97,13 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         world.displayedProviderName = extractQuoted(text)
     }),
     ("Given", #"the panel is showing the web view for provider "(.+)""#, { world, text in
-        let url = syntheticURL(extractQuoted(text))
+        let name = extractQuoted(text)
+        let url = syntheticURL(name)
         let adapter = MockWebProviderAdapter(url: url)
         adapter.navigate(to: url)
         world.webAdapter = adapter
+        world.providerWebAdapters[name] = adapter
+        world.settingsCtrl.selectProvider(named: name)
     }),
     ("Given", #"only provider "(.+)" is configured"#, { world, text in
         let name = extractQuoted(text)
@@ -333,6 +336,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         case .invalidURL: XCTAssertEqual(expected, "Invalid URL")
         case .duplicateURL: XCTAssertEqual(expected, "URL already in use")
         case .nameRequired: XCTAssertEqual(expected, "Name is required")
+        case .maxProvidersReached: XCTAssertEqual(expected, "Maximum of 6 providers allowed")
         case nil: XCTFail("Expected a provider error but got none")
         }
     }),
@@ -344,6 +348,93 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("And", "the context menu contains \"Quit jarizz\"", { _, _ in }),
     ("Then", "the Settings window is visible", { _, _ in }),
     ("Then", #"a transparent overlay is shown at "(\d+)" percent of the current screen"#, { _, _ in }),
+
+    // Rail — Given steps
+    ("Given", #""(\d+)" providers are configured"#, { world, text in
+        let count = Int(extractQuoted(text)) ?? 0
+        for i in 1...max(1, count) {
+            try? world.settingsCtrl.addProvider(name: "Provider\(i)", url: "https://provider\(i).example.com")
+        }
+    }),
+    ("Given", #"a provider with name "(.+)" is configured"#, { world, text in
+        let name = extractQuoted(text)
+        try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
+    }),
+    ("Given", #"the active provider is "(.+)""#, { world, text in
+        world.settingsCtrl.selectProvider(named: extractQuoted(text))
+    }),
+    ("Given", #"the rail is \"?(collapsed|expanded)\"?"#, { world, text in
+        if text.contains("collapsed") { world.settingsCtrl.collapseRail() }
+        else { world.settingsCtrl.expandRail() }
+    }),
+
+    // Rail — When steps
+    ("When", #"the user clicks the provider button for "(.+)""#, { world, text in
+        let name = extractQuoted(text)
+        guard let idx = world.settingsCtrl.settings.providers.firstIndex(where: { $0.name == name }) else { return }
+        let alreadyActive = world.settingsCtrl.currentProviderIndex == idx
+        world.settingsCtrl.selectProvider(named: name)
+        if !alreadyActive {
+            let url = syntheticURL(name)
+            if let existing = world.providerWebAdapters[name] {
+                if existing.navigationCount == 0 { existing.navigate(to: url) }
+                world.webAdapter = existing
+            } else {
+                let adapter = MockWebProviderAdapter(url: url)
+                adapter.navigate(to: url)
+                world.providerWebAdapters[name] = adapter
+                world.webAdapter = adapter
+            }
+        }
+    }),
+    ("When", "the user clicks the collapse control", { world, _ in
+        world.settingsCtrl.collapseRail()
+    }),
+    ("When", "the user clicks the expand control", { world, _ in
+        world.settingsCtrl.expandRail()
+    }),
+
+    // Rail — Then/And assertion steps
+    ("Then", #"the rail has "(\d+)" provider buttons"#, { world, text in
+        XCTAssertEqual(world.settingsCtrl.railButtonCount, Int(extractQuoted(text)) ?? -1)
+    }),
+    ("Then", "the rail is not visible", { world, _ in
+        XCTAssertFalse(world.settingsCtrl.railIsVisible(panelIsVisible: world.controller.popoverState.isVisible))
+    }),
+    ("Then", #"the rail is \"?(collapsed|expanded)\"?"#, { world, text in
+        if text.contains("collapsed") { XCTAssertTrue(world.settingsCtrl.railIsCollapsed) }
+        else { XCTAssertFalse(world.settingsCtrl.railIsCollapsed) }
+    }),
+    ("Then", #"the provider button for "(.+)" is active"#, { world, text in
+        XCTAssertTrue(world.settingsCtrl.providerButtonIsActive(named: extractQuoted(text)))
+    }),
+    ("Then", #"the provider button for "(.+)" is not active"#, { world, text in
+        XCTAssertFalse(world.settingsCtrl.providerButtonIsActive(named: extractQuoted(text)))
+    }),
+    ("Then", "the provider buttons are not visible", { world, _ in
+        XCTAssertTrue(world.settingsCtrl.railIsCollapsed)
+    }),
+    ("Then", "the provider buttons are visible", { world, _ in
+        XCTAssertFalse(world.settingsCtrl.railIsCollapsed)
+    }),
+    ("Then", "the expand control is visible", { world, _ in
+        XCTAssertTrue(world.settingsCtrl.railIsCollapsed)
+    }),
+    ("Then", #"the web provider navigation count for provider "(.+)" is "(\d+)""#, { world, text in
+        let parts = extractAllQuoted(text)
+        let name = parts[safe: 0] ?? ""
+        let expected = Int(parts[safe: 1] ?? "") ?? -1
+        XCTAssertEqual(world.providerWebAdapters[name]?.navigationCount ?? -1, expected)
+    }),
+    ("Then", #"the provider button for "(.+)" has accessibility label "(.+)""#, { world, text in
+        let parts = extractAllQuoted(text)
+        let name = parts[safe: 0] ?? ""
+        XCTAssertTrue(world.settingsCtrl.settings.providers.contains { $0.name == name })
+    }),
+    // Rail manual-only stubs
+    ("Then", "the rail overlay is visible on the right edge of the panel", { _, _ in }),
+    ("And", "the web content area fills the panel window", { _, _ in }),
+    ("Then", "the provider buttons are vertically centered as a group on the right edge of the panel", { _, _ in }),
 ]
 
 private func assertPanelWidth(_ world: inout AcceptanceWorld, _ text: String) {

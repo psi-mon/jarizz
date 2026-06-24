@@ -482,6 +482,43 @@
           "name": "Gemini"
         }
       ]
+    },
+    {
+      "name": "Adding a provider when the maximum is already configured is rejected",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the app is running"
+        },
+        {
+          "keyword": "And",
+          "text": "the Settings window is open on the Providers tab"
+        },
+        {
+          "keyword": "And",
+          "text": "\"\u003ccount\u003e\" providers are configured",
+          "parameters": [
+            "count"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user tries to add a provider with name \"Extra\" and URL \"https://extra.example.com\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider is not added"
+        },
+        {
+          "keyword": "And",
+          "text": "the error \"Maximum of 6 providers allowed\" is shown"
+        }
+      ],
+      "examples": [
+        {
+          "count": "6"
+        }
+      ]
     }
   ]
 }
