@@ -12,6 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private lazy var settingsViewModel = SettingsViewModel(store: store)
     private var settingsWindowController: NSWindowController?
     private var providerWebViews: [String: GeminiWebView] = [:]
+    private var panelRailHosting: NSHostingView<ProviderRailView>?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()
@@ -139,10 +140,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             adapter.webView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
         ])
 
-        let railHosting = NSHostingView(rootView: ProviderRailView(
-            vm: settingsViewModel,
-            onSelectProvider: { [weak self] name in self?.selectProviderByName(name) }
-        ))
+        if panelRailHosting == nil {
+            panelRailHosting = NSHostingView(rootView: ProviderRailView(
+                vm: settingsViewModel,
+                onSelectProvider: { [weak self] name in self?.selectProviderByName(name) }
+            ))
+        }
+        let railHosting = panelRailHosting!
         railHosting.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(railHosting)
         NSLayoutConstraint.activate([
@@ -155,25 +159,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func selectProviderByName(_ name: String) {
         settingsViewModel.controller.selectProvider(named: name)
-        guard let provider = settingsViewModel.controller.currentProvider,
-              let p = panel else { return }
-        let adapter = cachedAdapter(for: provider.url)
-        if adapter.navigationCount == 0 {
-            adapter.navigate(to: provider.url)
-        }
-        if webView !== adapter {
-            wireAdapter(adapter, to: p)
-        }
+        activateCurrentProvider()
     }
 
     private func cycleToNextProvider() {
         settingsViewModel.controller.cycleProvider()
+        activateCurrentProvider(force: true)
+    }
+
+    private func activateCurrentProvider(force: Bool = false) {
         guard let provider = settingsViewModel.controller.currentProvider,
               let p = panel else { return }
         let adapter = cachedAdapter(for: provider.url)
-        wireAdapter(adapter, to: p)
         if adapter.navigationCount == 0 {
             adapter.navigate(to: provider.url)
+        }
+        if force || webView !== adapter {
+            wireAdapter(adapter, to: p)
         }
     }
 

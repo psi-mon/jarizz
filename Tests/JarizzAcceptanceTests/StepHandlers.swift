@@ -71,14 +71,14 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         let name = parts[safe: 0] ?? ""
         let url = parts[safe: 1] ?? ""
         try? world.settingsCtrl.addProvider(name: name, url: url)
-        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+        if let id = providerID(named: name, in: world.settingsCtrl) {
             world.settingsCtrl.starProvider(id: id)
         }
     }),
     ("Given", #"a provider with name "(.+)" is starred"#, { world, text in
         let name = extractQuoted(text)
         try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
-        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+        if let id = providerID(named: name, in: world.settingsCtrl) {
             world.settingsCtrl.starProvider(id: id)
         }
     }),
@@ -89,7 +89,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Given", #"the provider "(.+)" is starred"#, { world, text in
         let name = extractQuoted(text)
         try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
-        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+        if let id = providerID(named: name, in: world.settingsCtrl) {
             world.settingsCtrl.starProvider(id: id)
         }
     }),
@@ -184,7 +184,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", #"the user removes the provider "(.+)""#, { world, text in
         let name = extractQuoted(text)
-        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+        if let id = providerID(named: name, in: world.settingsCtrl) {
             world.settingsCtrl.removeProvider(id: id)
         }
     }),
@@ -198,7 +198,7 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     }),
     ("When", #"the user stars the provider "(.+)""#, { world, text in
         let name = extractQuoted(text)
-        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+        if let id = providerID(named: name, in: world.settingsCtrl) {
             world.settingsCtrl.starProvider(id: id)
         }
     }),
@@ -465,6 +465,10 @@ private func screenRect(_ world: AcceptanceWorld) -> CGRect {
 
 private func syntheticURL(_ name: String) -> String {
     "https://\(name.lowercased()).example.com"
+}
+
+private func providerID(named name: String, in ctrl: SettingsController) -> UUID? {
+    ctrl.settings.providers.first(where: { $0.name == name })?.id
 }
 
 private func addNamedProviders(_ parts: [String], defaults: [String], to world: inout AcceptanceWorld) {
