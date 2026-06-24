@@ -4,6 +4,7 @@
 # acceptance-mutation-manifest-end
 
 Feature: Provider cycle
+  # Rail sync: the rail and Ctrl+Tab share activeProviderIndex in JarizzCore; see rail-012, rail-013.
 
   Background:
     Given the app is running

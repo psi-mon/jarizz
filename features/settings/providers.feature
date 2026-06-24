@@ -170,3 +170,17 @@ Feature: Settings — Providers
     Examples:
       | name   |
       | Gemini |
+
+  # provider-014
+  # simulation-friendly
+  Scenario Outline: Adding a provider when the maximum is already configured is rejected
+    Given the app is running
+    And the Settings window is open on the Providers tab
+    And "<count>" providers are configured
+    When the user tries to add a provider with name "Extra" and URL "https://extra.example.com"
+    Then the provider is not added
+    And the error "Maximum of 6 providers allowed" is shown
+
+    Examples:
+      | count |
+      | 6     |
