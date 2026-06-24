@@ -338,4 +338,26 @@ final class SettingsControllerTests: XCTestCase {
         ctrl.cycleProvider()
         XCTAssertEqual(ctrl.currentProvider?.name, "Gemini")
     }
+
+    func test_editProvider_unknownId_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.editProvider(id: UUID(), name: "X", url: "https://x.example.com")
+        XCTAssertEqual(ctrl.settings.providers.count, 1)
+        XCTAssertEqual(ctrl.settings.providers[0].name, "Gemini")
+    }
+
+    func test_removeProvider_unknownName_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        ctrl.removeProvider(named: "NoSuchProvider")
+        XCTAssertEqual(ctrl.settings.providers.count, 1)
+    }
+
+    func test_selectProvider_unknownName_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        ctrl.selectProvider(named: "NoSuchProvider")
+        XCTAssertEqual(ctrl.currentProviderIndex, 0)
+    }
 }

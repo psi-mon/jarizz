@@ -23,7 +23,7 @@ public struct SettingsController {
 
     public mutating func addProvider(name: String, url: String) throws {
         guard settings.providers.count < Self.maxProviderCount else { throw ProviderError.maxProvidersReached }
-        try validateProviderInput(name: name, url: url)
+        try Self.validateProviderInput(name: name, url: url)
         guard !settings.providers.contains(where: { $0.url == url }) else { throw ProviderError.duplicateURL }
         settings.providers.append(Provider(name: name, url: url))
         store.save(settings)
@@ -35,7 +35,7 @@ public struct SettingsController {
     }
 
     public mutating func editProvider(id: UUID, name: String, url: String) throws {
-        try validateProviderInput(name: name, url: url)
+        try Self.validateProviderInput(name: name, url: url)
         guard !settings.providers.contains(where: { $0.url == url && $0.id != id }) else {
             throw ProviderError.duplicateURL
         }
@@ -104,23 +104,23 @@ public struct SettingsController {
     public func providerButtonIsActive(named name: String) -> Bool {
         settings.providers[safe: currentProviderIndex]?.name == name
     }
+
+    private static func validateProviderInput(name: String, url: String) throws {
+        guard !name.isEmpty else { throw ProviderError.nameRequired }
+        guard isValidProviderURL(url) else { throw ProviderError.invalidURL }
+    }
+
+    private static func isValidProviderURL(_ string: String) -> Bool {
+        guard let url = URL(string: string),
+              let scheme = url.scheme,
+              ["http", "https"].contains(scheme),
+              let host = url.host, !host.isEmpty else { return false }
+        return true
+    }
 }
 
 private extension Array {
     subscript(safe index: Int) -> Element? {
         indices.contains(index) ? self[index] : nil
     }
-}
-
-private func validateProviderInput(name: String, url: String) throws {
-    guard !name.isEmpty else { throw ProviderError.nameRequired }
-    guard isValidProviderURL(url) else { throw ProviderError.invalidURL }
-}
-
-private func isValidProviderURL(_ string: String) -> Bool {
-    guard let url = URL(string: string),
-          let scheme = url.scheme,
-          ["http", "https"].contains(scheme),
-          let host = url.host, !host.isEmpty else { return false }
-    return true
 }
