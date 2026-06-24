@@ -126,15 +126,15 @@ struct ProvidersSettingsView: View {
     }
 
     private func removeSelected() {
-        guard let name = selectedProvider?.name else { return }
-        vm.controller.removeProvider(named: name)
+        guard let id = selectedProvider?.id else { return }
+        vm.controller.removeProvider(id: id)
         selectedID = nil
         onProvidersChange()
     }
 
     private func starSelected() {
-        guard let name = selectedProvider?.name else { return }
-        vm.controller.starProvider(named: name)
+        guard let id = selectedProvider?.id else { return }
+        vm.controller.starProvider(id: id)
         onProvidersChange()
     }
 

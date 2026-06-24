@@ -20,7 +20,9 @@ final class SettingsControllerPropertyTests: XCTestCase {
             try ctrl.addProvider(name: "A", url: urls[0])
             try ctrl.addProvider(name: "B", url: urls[1])
             try ctrl.addProvider(name: "C", url: urls[2])
-            ctrl.starProvider(named: starName)
+            if let id = ctrl.settings.providers.first(where: { $0.name == starName })?.id {
+                ctrl.starProvider(id: id)
+            }
             let starCount = ctrl.settings.providers.filter { $0.starred }.count
             XCTAssertEqual(starCount, 1, "Expected exactly 1 starred provider after starring \(starName)")
         }
