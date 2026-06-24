@@ -11,7 +11,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store = JSONSettingsStore()
     private lazy var settingsViewModel = SettingsViewModel(store: store)
     private var settingsWindowController: NSWindowController?
-    private var currentProviderIndex: Int = 0
     private var providerWebViews: [String: GeminiWebView] = [:]
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -130,11 +129,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func cycleToNextProvider() {
-        let providers = settingsViewModel.controller.settings.providers
-        guard providers.count > 1 else { return }
-        currentProviderIndex = (currentProviderIndex + 1) % providers.count
-        let provider = providers[currentProviderIndex]
-        guard let p = panel else { return }
+        settingsViewModel.controller.cycleProvider()
+        guard let provider = settingsViewModel.controller.currentProvider,
+              let p = panel else { return }
         let adapter = cachedAdapter(for: provider.url)
         wireAdapter(adapter, to: p)
         if adapter.navigationCount == 0 {
@@ -144,16 +141,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func updatePanelContent() {
         guard let p = panel else { return }
-        if let provider = settingsViewModel.controller.activeProvider {
-            let providers = settingsViewModel.controller.settings.providers
-            currentProviderIndex = providers.firstIndex(where: { $0.url == provider.url }) ?? 0
+        settingsViewModel.controller.resetCurrentToActiveProvider()
+        if let provider = settingsViewModel.controller.currentProvider {
             let adapter = cachedAdapter(for: provider.url)
             if webView !== adapter {
                 shell = AppShellController()
                 wireAdapter(adapter, to: p)
             }
         } else {
-            currentProviderIndex = 0
             shell = AppShellController()
             webView = nil
             p.contentView = NSHostingView(rootView: NoProviderView())

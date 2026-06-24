@@ -29,8 +29,8 @@ public struct SettingsController {
         store.save(settings)
     }
 
-    public mutating func removeProvider(named name: String) {
-        settings.providers.removeAll { $0.name == name }
+    public mutating func removeProvider(id: UUID) {
+        settings.providers.removeAll { $0.id == id }
         store.save(settings)
     }
 
@@ -46,9 +46,9 @@ public struct SettingsController {
         store.save(settings)
     }
 
-    public mutating func starProvider(named name: String) {
+    public mutating func starProvider(id: UUID) {
         for idx in settings.providers.indices {
-            settings.providers[idx].starred = settings.providers[idx].name == name
+            settings.providers[idx].starred = settings.providers[idx].id == id
         }
         store.save(settings)
     }
@@ -66,6 +66,15 @@ public struct SettingsController {
     public mutating func cycleProvider() {
         guard settings.providers.count > 1 else { return }
         currentProviderIndex = (currentProviderIndex + 1) % settings.providers.count
+    }
+
+    public mutating func resetCurrentToActiveProvider() {
+        if let active = activeProvider,
+           let idx = settings.providers.firstIndex(where: { $0.id == active.id }) {
+            currentProviderIndex = idx
+        } else {
+            currentProviderIndex = 0
+        }
     }
 
     public var panelContentMessage: String? {
