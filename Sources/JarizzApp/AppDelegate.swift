@@ -125,7 +125,45 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func wireAdapter(_ adapter: GeminiWebView, to p: NSPanel) {
         shell.configure(adapter: adapter)
         webView = adapter
-        p.contentView = adapter.webView
+
+        let container = NSView()
+        container.wantsLayer = true
+        container.autoresizingMask = [.width, .height]
+
+        adapter.webView.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(adapter.webView)
+        NSLayoutConstraint.activate([
+            adapter.webView.topAnchor.constraint(equalTo: container.topAnchor),
+            adapter.webView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            adapter.webView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            adapter.webView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+        ])
+
+        let railHosting = NSHostingView(rootView: ProviderRailView(
+            vm: settingsViewModel,
+            onSelectProvider: { [weak self] name in self?.selectProviderByName(name) }
+        ))
+        railHosting.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(railHosting)
+        NSLayoutConstraint.activate([
+            railHosting.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            railHosting.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+        ])
+
+        p.contentView = container
+    }
+
+    private func selectProviderByName(_ name: String) {
+        settingsViewModel.controller.selectProvider(named: name)
+        guard let provider = settingsViewModel.controller.currentProvider,
+              let p = panel else { return }
+        let adapter = cachedAdapter(for: provider.url)
+        if adapter.navigationCount == 0 {
+            adapter.navigate(to: provider.url)
+        }
+        if webView !== adapter {
+            wireAdapter(adapter, to: p)
+        }
     }
 
     private func cycleToNextProvider() {
