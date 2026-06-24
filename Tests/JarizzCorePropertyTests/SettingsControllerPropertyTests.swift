@@ -89,4 +89,16 @@ final class SettingsControllerPropertyTests: XCTestCase {
             return !ctrl.railIsCollapsed
         }
     }
+
+    func test_prop_resetCurrentToActiveProvider_coherence() {
+        forAll([1, 2, 4], "after resetCurrentToActiveProvider, currentProvider equals activeProvider") { count in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            for i in 0..<count {
+                try? ctrl.addProvider(name: "P\(i)", url: "https://p\(i).example.com")
+            }
+            for _ in 0..<count { ctrl.cycleProvider() }
+            ctrl.resetCurrentToActiveProvider()
+            return ctrl.currentProvider?.id == ctrl.activeProvider?.id
+        }
+    }
 }
