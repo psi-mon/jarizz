@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/refactorer/Tests/JarizzAcceptanceTests/ir/panel_layout.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/panel_layout.json
 final class PanelLayoutAndAppearanceAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/panel_layout.json"
 
@@ -80,6 +80,31 @@ final class PanelLayoutAndAppearanceAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the mouse pointer is on a screen with frame size \"<width>\" by \"<height>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel content width is \"<panel_width>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel content height is \"<panel_height>\"")
+    }
+
+    // Scenario: Panel content area fills the panel window when the provider rail is visible
+    func test_PanelContentAreaFillsThePanelWindowWhenTheProviderRailIsVisible_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "\"1\" providers are configured")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the mouse pointer is on a screen with frame size \"<width>\" by \"<height>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel content width is \"<panel_width>\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel content height is \"<panel_height>\"")
+    }
+
+    func test_PanelContentAreaFillsThePanelWindowWhenTheProviderRailIsVisible_example2() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 4, exampleIndex: 1)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel is hidden")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "\"1\" providers are configured")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the mouse pointer is on a screen with frame size \"<width>\" by \"<height>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user presses the global hotkey \"LeftShift+RightCommand+]\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the panel content width is \"<panel_width>\"")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the panel content height is \"<panel_height>\"")

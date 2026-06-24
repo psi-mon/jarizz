@@ -165,6 +165,55 @@
           "width": "1920"
         }
       ]
+    },
+    {
+      "name": "Panel content area fills the panel window when the provider rail is visible",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "\"1\" providers are configured"
+        },
+        {
+          "keyword": "And",
+          "text": "the mouse pointer is on a screen with frame size \"\u003cwidth\u003e\" by \"\u003cheight\u003e\"",
+          "parameters": [
+            "width",
+            "height"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses the global hotkey \"LeftShift+RightCommand+]\""
+        },
+        {
+          "keyword": "Then",
+          "text": "the panel content width is \"\u003cpanel_width\u003e\"",
+          "parameters": [
+            "panel_width"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the panel content height is \"\u003cpanel_height\u003e\"",
+          "parameters": [
+            "panel_height"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "height": "1440",
+          "panel_height": "720",
+          "panel_width": "1280",
+          "width": "2560"
+        },
+        {
+          "height": "1080",
+          "panel_height": "540",
+          "panel_width": "960",
+          "width": "1920"
+        }
+      ]
     }
   ]
 }

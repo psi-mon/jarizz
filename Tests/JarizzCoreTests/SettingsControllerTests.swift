@@ -105,7 +105,8 @@ final class SettingsControllerTests: XCTestCase {
     func test_removeProvider_removesFromList() throws {
         var ctrl = SettingsController(store: InMemorySettingsStore())
         try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
-        ctrl.removeProvider(named: "Gemini")
+        let id = ctrl.settings.providers[0].id
+        ctrl.removeProvider(id: id)
         XCTAssertFalse(ctrl.settings.providers.contains { $0.name == "Gemini" })
     }
 
@@ -121,7 +122,8 @@ final class SettingsControllerTests: XCTestCase {
     func test_starProvider_setsStarred() throws {
         var ctrl = SettingsController(store: InMemorySettingsStore())
         try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
-        ctrl.starProvider(named: "Gemini")
+        let id = ctrl.settings.providers[0].id
+        ctrl.starProvider(id: id)
         XCTAssertTrue(ctrl.settings.providers.first { $0.name == "Gemini" }?.starred ?? false)
     }
 
@@ -129,8 +131,10 @@ final class SettingsControllerTests: XCTestCase {
         var ctrl = SettingsController(store: InMemorySettingsStore())
         try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
         try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
-        ctrl.starProvider(named: "Gemini")
-        ctrl.starProvider(named: "ChatGPT")
+        let geminiID = ctrl.settings.providers[0].id
+        let chatGPTID = ctrl.settings.providers[1].id
+        ctrl.starProvider(id: geminiID)
+        ctrl.starProvider(id: chatGPTID)
         XCTAssertFalse(ctrl.settings.providers.first { $0.name == "Gemini" }?.starred ?? true)
         XCTAssertTrue(ctrl.settings.providers.first { $0.name == "ChatGPT" }?.starred ?? false)
     }
@@ -139,7 +143,8 @@ final class SettingsControllerTests: XCTestCase {
         var ctrl = SettingsController(store: InMemorySettingsStore())
         try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
         try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
-        ctrl.starProvider(named: "ChatGPT")
+        let id = ctrl.settings.providers[1].id
+        ctrl.starProvider(id: id)
         XCTAssertEqual(ctrl.activeProvider?.name, "ChatGPT")
     }
 
@@ -225,7 +230,8 @@ final class SettingsControllerTests: XCTestCase {
         let store = InMemorySettingsStore()
         var ctrl = SettingsController(store: store)
         try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
-        ctrl.starProvider(named: "Gemini")
+        let id = ctrl.settings.providers[0].id
+        ctrl.starProvider(id: id)
         ctrl.reload()
         XCTAssertTrue(ctrl.settings.providers.first { $0.name == "Gemini" }?.starred ?? false)
     }
@@ -238,5 +244,154 @@ final class SettingsControllerTests: XCTestCase {
         XCTAssertThrowsError(try ctrl.editProvider(id: idA, name: "A", url: "https://b.example")) { err in
             XCTAssertEqual(err as? ProviderError, .duplicateURL)
         }
+    }
+
+    func test_addProvider_aboveMaxCount_throws() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        for i in 1...6 {
+            try ctrl.addProvider(name: "P\(i)", url: "https://p\(i).example.com")
+        }
+        XCTAssertThrowsError(try ctrl.addProvider(name: "Extra", url: "https://extra.example.com")) { err in
+            XCTAssertEqual(err as? ProviderError, .maxProvidersReached)
+        }
+    }
+
+    // MARK: - Rail
+
+    func test_railButtonCount_zero() {
+        XCTAssertEqual(SettingsController(store: InMemorySettingsStore()).railButtonCount, 0)
+    }
+
+    func test_railButtonCount_matchesProviders() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "A", url: "https://a.example")
+        try ctrl.addProvider(name: "B", url: "https://b.example")
+        XCTAssertEqual(ctrl.railButtonCount, 2)
+    }
+
+    func test_railIsVisible_noProviders_returnsFalse() {
+        XCTAssertFalse(SettingsController(store: InMemorySettingsStore()).railIsVisible(panelIsVisible: true))
+    }
+
+    func test_railIsVisible_panelHidden_returnsFalse() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "A", url: "https://a.example")
+        XCTAssertFalse(ctrl.railIsVisible(panelIsVisible: false))
+    }
+
+    func test_railIsVisible_providersAndPanel_returnsTrue() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "A", url: "https://a.example")
+        XCTAssertTrue(ctrl.railIsVisible(panelIsVisible: true))
+    }
+
+    func test_railIsCollapsed_defaultFalse() {
+        XCTAssertFalse(SettingsController(store: InMemorySettingsStore()).railIsCollapsed)
+    }
+
+    func test_collapseRail_setsCollapsed() {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        ctrl.collapseRail()
+        XCTAssertTrue(ctrl.railIsCollapsed)
+    }
+
+    func test_expandRail_afterCollapse_setsExpanded() {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        ctrl.collapseRail()
+        ctrl.expandRail()
+        XCTAssertFalse(ctrl.railIsCollapsed)
+    }
+
+    func test_railCollapsed_persists() {
+        let store = InMemorySettingsStore()
+        var ctrl = SettingsController(store: store)
+        ctrl.collapseRail()
+        ctrl.reload()
+        XCTAssertTrue(ctrl.railIsCollapsed)
+    }
+
+    func test_selectProvider_updatesCurrentIndex() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        ctrl.selectProvider(named: "ChatGPT")
+        XCTAssertEqual(ctrl.currentProviderIndex, 1)
+    }
+
+    func test_providerButtonIsActive_currentProvider_returnsTrue() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        XCTAssertTrue(ctrl.providerButtonIsActive(named: "Gemini"))
+        XCTAssertFalse(ctrl.providerButtonIsActive(named: "ChatGPT"))
+    }
+
+    func test_providerButtonIsActive_afterSelect_updatesCorrectly() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        ctrl.selectProvider(named: "ChatGPT")
+        XCTAssertFalse(ctrl.providerButtonIsActive(named: "Gemini"))
+        XCTAssertTrue(ctrl.providerButtonIsActive(named: "ChatGPT"))
+    }
+
+    func test_cycleProvider_startsFromSelectedProvider() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        try ctrl.addProvider(name: "Copilot", url: "https://copilot.microsoft.com")
+        ctrl.selectProvider(named: "Copilot")
+        ctrl.cycleProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "Gemini")
+    }
+
+    func test_editProvider_unknownId_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.editProvider(id: UUID(), name: "X", url: "https://x.example.com")
+        XCTAssertEqual(ctrl.settings.providers.count, 1)
+        XCTAssertEqual(ctrl.settings.providers[0].name, "Gemini")
+    }
+
+    func test_removeProvider_unknownID_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        ctrl.removeProvider(id: UUID())
+        XCTAssertEqual(ctrl.settings.providers.count, 1)
+    }
+
+    func test_selectProvider_unknownName_doesNothing() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        ctrl.selectProvider(named: "NoSuchProvider")
+        XCTAssertEqual(ctrl.currentProviderIndex, 0)
+    }
+
+    // MARK: - resetCurrentToActiveProvider
+
+    func test_resetCurrentToActiveProvider_noProviders_indexRemainsZero() {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        ctrl.resetCurrentToActiveProvider()
+        XCTAssertEqual(ctrl.currentProviderIndex, 0)
+    }
+
+    func test_resetCurrentToActiveProvider_starredProvider_setsIndexToStarred() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        let id = ctrl.settings.providers[1].id
+        ctrl.starProvider(id: id)
+        ctrl.cycleProvider()
+        ctrl.resetCurrentToActiveProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "ChatGPT")
+    }
+
+    func test_resetCurrentToActiveProvider_noStarred_setsIndexToFirst() throws {
+        var ctrl = SettingsController(store: InMemorySettingsStore())
+        try ctrl.addProvider(name: "Gemini", url: "https://gemini.google.com/app")
+        try ctrl.addProvider(name: "ChatGPT", url: "https://chatgpt.com")
+        ctrl.cycleProvider()
+        ctrl.resetCurrentToActiveProvider()
+        XCTAssertEqual(ctrl.currentProvider?.name, "Gemini")
     }
 }

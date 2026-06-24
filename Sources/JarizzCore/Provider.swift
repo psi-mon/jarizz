@@ -18,4 +18,5 @@ public enum ProviderError: Error, Equatable {
     case invalidURL
     case duplicateURL
     case nameRequired
+    case maxProvidersReached
 }

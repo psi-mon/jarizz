@@ -1,0 +1,469 @@
+{
+  "name": "Provider rail overlay",
+  "background": [
+    {
+      "keyword": "Given",
+      "text": "the app is running"
+    },
+    {
+      "keyword": "And",
+      "text": "the panel is visible"
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "Rail shows one button per configured provider",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "\"\u003ccount\u003e\" providers are configured",
+          "parameters": [
+            "count"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail has \"\u003ccount\u003e\" provider buttons",
+          "parameters": [
+            "count"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "count": "1"
+        },
+        {
+          "count": "6"
+        }
+      ]
+    },
+    {
+      "name": "Rail is not visible when no providers are configured",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "no providers are configured"
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail is not visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Rail is not visible when the panel is hidden",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the panel is hidden"
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail is not visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "The active provider button is marked active",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the active provider is \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider button for \"\u003cfirst\u003e\" is active",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the provider button for \"\u003csecond\u003e\" is not active",
+          "parameters": [
+            "second"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Clicking a provider button switches the active provider",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the active provider is \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the provider button for \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the active provider is \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Clicking a provider button navigates to that provider's URL",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the active provider is \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the provider button for \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider has navigated to the URL of provider \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Clicking the already-active provider button does not navigate again",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the panel is showing the web view for provider \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the provider button for \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider navigation count for provider \"\u003cfirst\u003e\" is \"1\"",
+          "parameters": [
+            "first"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Switching away from a provider via the rail and back does not reload it",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"\u003cfirst\u003e\" and \"\u003csecond\u003e\" are configured in that order",
+          "parameters": [
+            "first",
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the panel is showing the web view for provider \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the provider button for \"\u003csecond\u003e\"",
+          "parameters": [
+            "second"
+          ]
+        },
+        {
+          "keyword": "And",
+          "text": "the user clicks the provider button for \"\u003cfirst\u003e\"",
+          "parameters": [
+            "first"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the web provider navigation count for provider \"\u003cfirst\u003e\" is \"1\"",
+          "parameters": [
+            "first"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "first": "Gemini",
+          "second": "ChatGPT"
+        }
+      ]
+    },
+    {
+      "name": "Rail collapses when the collapse control is clicked",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the rail is expanded"
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the collapse control"
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail is collapsed"
+        },
+        {
+          "keyword": "And",
+          "text": "the provider buttons are not visible"
+        },
+        {
+          "keyword": "And",
+          "text": "the expand control is visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Rail expands when the expand control is clicked",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the rail is collapsed"
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the expand control"
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail is expanded"
+        },
+        {
+          "keyword": "And",
+          "text": "the provider buttons are visible"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Rail collapse state persists across app restart",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "the rail is \"\u003cstate\u003e\"",
+          "parameters": [
+            "state"
+          ]
+        },
+        {
+          "keyword": "When",
+          "text": "the app is restarted"
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail is \"\u003cstate\u003e\"",
+          "parameters": [
+            "state"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "state": "collapsed"
+        },
+        {
+          "state": "expanded"
+        }
+      ]
+    },
+    {
+      "name": "Active provider button highlight follows Ctrl+Tab",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"Gemini\" and \"ChatGPT\" are configured in that order"
+        },
+        {
+          "keyword": "And",
+          "text": "the active provider is \"Gemini\""
+        },
+        {
+          "keyword": "When",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "Then",
+          "text": "the active provider is \"ChatGPT\""
+        },
+        {
+          "keyword": "And",
+          "text": "the provider button for \"ChatGPT\" is active"
+        },
+        {
+          "keyword": "And",
+          "text": "the provider button for \"Gemini\" is not active"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Ctrl+Tab cycles from the provider last activated by the rail",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "providers \"Gemini\", \"ChatGPT\", and \"Copilot\" are configured in that order"
+        },
+        {
+          "keyword": "And",
+          "text": "the active provider is \"Gemini\""
+        },
+        {
+          "keyword": "When",
+          "text": "the user clicks the provider button for \"Copilot\""
+        },
+        {
+          "keyword": "And",
+          "text": "the user presses Ctrl+Tab"
+        },
+        {
+          "keyword": "Then",
+          "text": "the active provider is \"Gemini\""
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Each provider button has the provider name as its accessibility label",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "a provider with name \"\u003cname\u003e\" is configured",
+          "parameters": [
+            "name"
+          ]
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider button for \"\u003cname\u003e\" has accessibility label \"\u003cname\u003e\"",
+          "parameters": [
+            "name",
+            "name"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "name": "Gemini"
+        }
+      ]
+    },
+    {
+      "name": "Rail overlay sits on top of web content without shrinking the content area",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "\"1\" providers are configured"
+        },
+        {
+          "keyword": "Then",
+          "text": "the rail overlay is visible on the right edge of the panel"
+        },
+        {
+          "keyword": "And",
+          "text": "the web content area fills the panel window"
+        }
+      ],
+      "examples": []
+    },
+    {
+      "name": "Provider buttons are vertically centered as a group on the rail",
+      "steps": [
+        {
+          "keyword": "Given",
+          "text": "\"3\" providers are configured"
+        },
+        {
+          "keyword": "Then",
+          "text": "the provider buttons are vertically centered as a group on the right edge of the panel"
+        }
+      ],
+      "examples": []
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/refactorer/Tests/JarizzAcceptanceTests/ir/providers.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/providers.json
 final class SettingsProvidersAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/providers.json"
 
@@ -156,5 +156,17 @@ final class SettingsProvidersAcceptanceTests: XCTestCase {
         AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the provider \"<name>\" is starred")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the app is restarted")
         AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the provider \"<name>\" is starred")
+    }
+
+    // Scenario: Adding a provider when the maximum is already configured is rejected
+    func test_AddingAProviderWhenTheMaximumIsAlreadyConfiguredIsRejected_example1() {
+        var world = AcceptanceWorld()
+        let example = runtimeExample(compiledIRPath: Self.compiledIRPath, scenarioIndex: 13, exampleIndex: 0)
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Given", text: "the app is running")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the Settings window is open on the Providers tab")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "\"<count>\" providers are configured")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "When", text: "the user tries to add a provider with name \"Extra\" and URL \"https://extra.example.com\"")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "Then", text: "the provider is not added")
+        AcceptanceRuntime.run(world: &world, example: example, keyword: "And", text: "the error \"Maximum of 6 providers allowed\" is shown")
     }
 }
