@@ -20,7 +20,9 @@ final class SettingsControllerPropertyTests: XCTestCase {
             try ctrl.addProvider(name: "A", url: urls[0])
             try ctrl.addProvider(name: "B", url: urls[1])
             try ctrl.addProvider(name: "C", url: urls[2])
-            ctrl.starProvider(named: starName)
+            if let id = ctrl.settings.providers.first(where: { $0.name == starName })?.id {
+                ctrl.starProvider(id: id)
+            }
             let starCount = ctrl.settings.providers.filter { $0.starred }.count
             XCTAssertEqual(starCount, 1, "Expected exactly 1 starred provider after starring \(starName)")
         }
@@ -43,6 +45,48 @@ final class SettingsControllerPropertyTests: XCTestCase {
             try? ctrl.addProvider(name: "Only", url: "https://only.example.com")
             for _ in 0..<cycleCount { ctrl.cycleProvider() }
             return ctrl.currentProviderIndex == 0
+        }
+    }
+
+    // MARK: - Rail
+
+    func test_prop_railButtonCountEqualsProviderCount() {
+        forAll([0, 1, 3, 6], "railButtonCount always equals settings.providers.count") { count in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            for i in 0..<count {
+                try? ctrl.addProvider(name: "P\(i)", url: "https://p\(i).example.com")
+            }
+            return ctrl.railButtonCount == ctrl.settings.providers.count
+        }
+    }
+
+    func test_prop_atMostOneButtonActive() throws {
+        forAll([1, 2, 4, 6], "at most one provider button is active at any time") { count in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            for i in 0..<count {
+                try? ctrl.addProvider(name: "P\(i)", url: "https://p\(i).example.com")
+            }
+            let activeCount = ctrl.settings.providers.filter { ctrl.providerButtonIsActive(named: $0.name) }.count
+            return activeCount <= 1
+        }
+    }
+
+    func test_prop_collapseRailIsIdempotent() {
+        forAll([1, 3], "collapseRail is idempotent — second call has no extra effect") { _ in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            ctrl.collapseRail()
+            ctrl.collapseRail()
+            return ctrl.railIsCollapsed
+        }
+    }
+
+    func test_prop_expandRailIsIdempotent() {
+        forAll([1, 3], "expandRail is idempotent — second call has no extra effect") { _ in
+            var ctrl = SettingsController(store: InMemorySettingsStore())
+            ctrl.collapseRail()
+            ctrl.expandRail()
+            ctrl.expandRail()
+            return !ctrl.railIsCollapsed
         }
     }
 }

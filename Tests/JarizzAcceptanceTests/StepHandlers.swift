@@ -71,12 +71,16 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         let name = parts[safe: 0] ?? ""
         let url = parts[safe: 1] ?? ""
         try? world.settingsCtrl.addProvider(name: name, url: url)
-        world.settingsCtrl.starProvider(named: name)
+        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+            world.settingsCtrl.starProvider(id: id)
+        }
     }),
     ("Given", #"a provider with name "(.+)" is starred"#, { world, text in
         let name = extractQuoted(text)
         try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
-        world.settingsCtrl.starProvider(named: name)
+        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+            world.settingsCtrl.starProvider(id: id)
+        }
     }),
     ("Given", #"a provider with name "(.+)" and URL "(.+)" has been added"#, { world, text in
         let parts = extractAllQuoted(text)
@@ -85,7 +89,9 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
     ("Given", #"the provider "(.+)" is starred"#, { world, text in
         let name = extractQuoted(text)
         try? world.settingsCtrl.addProvider(name: name, url: syntheticURL(name))
-        world.settingsCtrl.starProvider(named: name)
+        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+            world.settingsCtrl.starProvider(id: id)
+        }
     }),
     ("Given", #"providers "(.+)" and "(.+)" are configured in that order"#, { world, text in
         addNamedProviders(extractAllQuoted(text), defaults: ["Provider1", "Provider2"], to: &world)
@@ -177,7 +183,10 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         try? world.settingsCtrl.addProvider(name: parts[safe: 0] ?? "", url: parts[safe: 1] ?? "")
     }),
     ("When", #"the user removes the provider "(.+)""#, { world, text in
-        world.settingsCtrl.removeProvider(named: extractQuoted(text))
+        let name = extractQuoted(text)
+        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+            world.settingsCtrl.removeProvider(id: id)
+        }
     }),
     ("When", #"the user edits the provider name to "(.+)" and URL to "(.+)""#, { world, text in
         let parts = extractAllQuoted(text)
@@ -188,7 +197,10 @@ let stepHandlerTable: [(String, String, (inout AcceptanceWorld, String) -> Void)
         }
     }),
     ("When", #"the user stars the provider "(.+)""#, { world, text in
-        world.settingsCtrl.starProvider(named: extractQuoted(text))
+        let name = extractQuoted(text)
+        if let id = world.settingsCtrl.settings.providers.first(where: { $0.name == name })?.id {
+            world.settingsCtrl.starProvider(id: id)
+        }
     }),
     ("When", #"the user tries to add a provider with name "(.*)" and URL "(.+)""#, { world, text in
         let parts = extractAllQuoted(text)
