@@ -49,3 +49,17 @@ Feature: Panel layout and appearance
       | width | height | panel_width | panel_height |
       | 2560  | 1440   | 1280        | 720          |
       | 1920  | 1080   | 960         | 540          |
+
+  # app-shell-016
+  # simulation-friendly: confirms rail overlay does not shrink the panel content area
+  Scenario Outline: Panel content area fills the panel window when the provider rail is visible
+    Given "1" providers are configured
+    And the mouse pointer is on a screen with frame size "<width>" by "<height>"
+    When the user presses the global hotkey "LeftShift+RightCommand+]"
+    Then the panel content width is "<panel_width>"
+    And the panel content height is "<panel_height>"
+
+    Examples:
+      | width | height | panel_width | panel_height |
+      | 2560  | 1440   | 1280        | 720          |
+      | 1920  | 1080   | 960         | 540          |

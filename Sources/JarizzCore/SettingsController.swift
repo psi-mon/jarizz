@@ -19,7 +19,10 @@ public struct SettingsController {
         store.save(settings)
     }
 
+    public static let maxProviderCount = 6
+
     public mutating func addProvider(name: String, url: String) throws {
+        guard settings.providers.count < Self.maxProviderCount else { throw ProviderError.maxProvidersReached }
         try validateProviderInput(name: name, url: url)
         guard !settings.providers.contains(where: { $0.url == url }) else { throw ProviderError.duplicateURL }
         settings.providers.append(Provider(name: name, url: url))
@@ -71,6 +74,35 @@ public struct SettingsController {
 
     public mutating func reload() {
         settings = store.load()
+    }
+
+    // MARK: - Rail
+
+    public var railButtonCount: Int { settings.providers.count }
+
+    public func railIsVisible(panelIsVisible: Bool) -> Bool {
+        !settings.providers.isEmpty && panelIsVisible
+    }
+
+    public var railIsCollapsed: Bool { settings.railCollapsed }
+
+    public mutating func collapseRail() {
+        settings.railCollapsed = true
+        store.save(settings)
+    }
+
+    public mutating func expandRail() {
+        settings.railCollapsed = false
+        store.save(settings)
+    }
+
+    public mutating func selectProvider(named name: String) {
+        guard let idx = settings.providers.firstIndex(where: { $0.name == name }) else { return }
+        currentProviderIndex = idx
+    }
+
+    public func providerButtonIsActive(named name: String) -> Bool {
+        settings.providers[safe: currentProviderIndex]?.name == name
     }
 }
 
