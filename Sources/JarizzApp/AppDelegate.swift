@@ -155,25 +155,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func selectProviderByName(_ name: String) {
         settingsViewModel.controller.selectProvider(named: name)
-        guard let provider = settingsViewModel.controller.currentProvider,
-              let p = panel else { return }
-        let adapter = cachedAdapter(for: provider.url)
-        if adapter.navigationCount == 0 {
-            adapter.navigate(to: provider.url)
-        }
-        if webView !== adapter {
-            wireAdapter(adapter, to: p)
-        }
+        activateCurrentProvider()
     }
 
     private func cycleToNextProvider() {
         settingsViewModel.controller.cycleProvider()
+        activateCurrentProvider(force: true)
+    }
+
+    private func activateCurrentProvider(force: Bool = false) {
         guard let provider = settingsViewModel.controller.currentProvider,
               let p = panel else { return }
         let adapter = cachedAdapter(for: provider.url)
-        wireAdapter(adapter, to: p)
         if adapter.navigationCount == 0 {
             adapter.navigate(to: provider.url)
+        }
+        if force || webView !== adapter {
+            wireAdapter(adapter, to: p)
         }
     }
 
