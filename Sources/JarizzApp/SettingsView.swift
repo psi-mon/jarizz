@@ -144,10 +144,11 @@ struct ProvidersSettingsView: View {
             newName = ""; newURL = ""; addError = ""
             showAdd = false
             onProvidersChange()
-        } catch ProviderError.invalidURL   { addError = "Invalid URL" }
-          catch ProviderError.duplicateURL { addError = "URL already in use" }
-          catch ProviderError.nameRequired { addError = "Name is required" }
-          catch                            { addError = "Unknown error" }
+        } catch ProviderError.invalidURL        { addError = "Invalid URL" }
+          catch ProviderError.duplicateURL     { addError = "URL already in use" }
+          catch ProviderError.nameRequired     { addError = "Name is required" }
+          catch ProviderError.maxProvidersReached { addError = "Maximum of 6 providers allowed" }
+          catch                                { addError = "Unknown error" }
     }
 
     private func cancelAdd() {
