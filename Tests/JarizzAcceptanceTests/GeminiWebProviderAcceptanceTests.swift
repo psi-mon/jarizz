@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/gemini_web.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/Tests/JarizzAcceptanceTests/ir/gemini_web.json
 final class GeminiWebProviderAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/gemini_web.json"
 

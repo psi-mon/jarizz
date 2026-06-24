@@ -2,7 +2,7 @@
 import XCTest
 @testable import JarizzCore
 
-// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/architect/Tests/JarizzAcceptanceTests/ir/provider_rail.json
+// IR: /Users/zoiman/DEV/Agentic/jarizz/.worktrees/coder/Tests/JarizzAcceptanceTests/ir/provider_rail.json
 final class ProviderRailOverlayAcceptanceTests: XCTestCase {
     private static let compiledIRPath = "Tests/JarizzAcceptanceTests/ir/provider_rail.json"
 
