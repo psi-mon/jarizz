@@ -5,4 +5,5 @@ public protocol WebProviderAdapter: AnyObject {
     var handlesNewWindowsInApp: Bool { get }
     var focusesInputFieldOnShow: Bool { get }
     func navigate(to url: String)
+    func focusInputField()
 }

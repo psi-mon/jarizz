@@ -177,6 +177,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if force || webView !== adapter {
             wireAdapter(adapter, to: p)
         }
+        DispatchQueue.main.async { [weak self] in self?.webView?.focusInputField() }
     }
 
     private func updatePanelContent() {
@@ -218,6 +219,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             p.animator().alphaValue = 1
         }
         shell.togglePopover()
+        DispatchQueue.main.async { [weak self] in self?.webView?.focusInputField() }
         startEventMonitor()
     }
 

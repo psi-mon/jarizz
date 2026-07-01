@@ -14,4 +14,6 @@ public final class MockWebProviderAdapter: WebProviderAdapter {
         lastNavigatedURL = url
         navigationCount += 1
     }
+
+    public func focusInputField() {}
 }

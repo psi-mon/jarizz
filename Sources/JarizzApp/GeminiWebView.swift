@@ -25,6 +25,19 @@ final class GeminiWebView: NSObject, WebProviderAdapter {
         webView.load(URLRequest(url: target))
         navigationCount += 1
     }
+
+    func focusInputField() {
+        webView.evaluateJavaScript(Self.focusJS, completionHandler: nil)
+    }
+
+    private static let focusJS = """
+        (function() {
+            var el = document.querySelector('[contenteditable="true"]')
+                || document.querySelector('textarea')
+                || document.querySelector('[role="textbox"]');
+            if (el) { el.focus(); }
+        })();
+        """
 }
 
 // MARK: - WKUIDelegate (in-app popups for secondary windows)
@@ -46,14 +59,6 @@ extension GeminiWebView: WKUIDelegate {
 
 extension GeminiWebView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        let js = """
-            (function() {
-                var el = document.querySelector('[contenteditable="true"]')
-                    || document.querySelector('textarea')
-                    || document.querySelector('[role="textbox"]');
-                if (el) { el.focus(); }
-            })();
-            """
-        webView.evaluateJavaScript(js, completionHandler: nil)
+        webView.evaluateJavaScript(GeminiWebView.focusJS, completionHandler: nil)
     }
 }
